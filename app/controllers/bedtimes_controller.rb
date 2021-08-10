@@ -1,0 +1,2 @@
+class BedtimesController < ApplicationController
+end

@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  resources :schedule_activities
+  resources :activities
+  resources :schedule_foods
+  resources :foods
+  resources :bedtimes
+  resources :wakeups
+  resources :schedules
+  resources :users
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
   # Routing logic: fallback requests for React Router.
