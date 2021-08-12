@@ -1,8 +1,4 @@
 Rails.application.routes.draw do
-  resources :schedule_activities
-  resources :activities
-  resources :schedule_foods
-  resources :foods
   resources :bedtimes
   resources :wakeups
   resources :schedules
