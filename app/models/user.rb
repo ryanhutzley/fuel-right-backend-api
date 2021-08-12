@@ -1,3 +1,4 @@
 class User < ApplicationRecord
-    has_many :schedules
+    has_secure_password
+    has_many :schedules, dependent: :destroy
 end
