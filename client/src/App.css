@@ -1,1 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Michroma&family=Open+Sans&display=swap');
 
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+#brand {
+    font-family: 'Michroma', sans-serif;
+}
