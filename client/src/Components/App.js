@@ -7,11 +7,36 @@ import DailyLog from './DailyLog'
 import History from './History'
 import EditProfileForm from './EditProfileForm'
 import { Switch, Route } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useHistory } from 'react-router'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState("hi")
+  
+  const history = useHistory()
+
+  useEffect(() => {
+    async function getUser() {
+      const res = await fetch("/me")
+      if (res.ok) {
+        const json = await res.json()
+        setUser(json)
+        history.push("/")
+      }
+    }
+    getUser()
+  }, [])
+
+  async function logOut() {
+    const res = await fetch("/logout", {
+      method: "DELETE"
+    })
+    if (res.ok) {
+      setUser(null)
+      history.push("/login")
+    }
+  }
 
   return (
     <div className="App">
@@ -31,7 +56,7 @@ function App() {
             {user ? <EditProfileForm /> : <Login />}
           </Route>
           <Route exact path="/login">
-            <Login />
+            <Login setUser={setUser}/>
           </Route>
         </Switch>
       </div>

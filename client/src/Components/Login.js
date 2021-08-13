@@ -1,9 +1,14 @@
 import { Form, Button } from 'react-bootstrap'
-import { NavLink } from 'react-router'
+import { useHistory } from 'react-router'
 import { useState } from 'react'
 
-function Login() {
+function Login({ setUser }) {
     const [formDisplayed, setFormDisplayed] = useState(true)
+    const [existingUser, setExistingUser] = useState({
+        email: "",
+        password: ""
+    })
+    const [errors, setErrors] = useState([])
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -11,6 +16,48 @@ function Login() {
         password_confirmation: "",
         weight: null
     })
+
+    const history = useHistory()
+
+    async function handleSignup(e) {
+        e.preventDefault()
+        const res = await fetch("/signup", {
+            method: "POST",
+            headers: {"Content-type": "application/json"},
+            body: JSON.stringify(formData)
+        })
+        const data = await res.json()
+        if (res.ok) {
+            console.log(data)
+            setUser(data)
+            history.push("/")
+        } else {
+            console.log(data)
+            setErrors(data.errors)
+        }
+    }
+
+    async function handleLogin(e) {
+        e.preventDefault()
+        const credentials = {
+            email: "",
+            password: ""
+        }
+        const res = await fetch("/login", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(credentials)
+        })
+        const data = await res.json()
+        if (res.ok) {
+            console.log(data)
+            setUser(data)
+            history.push("/")
+        } else {
+            console.log(data)
+            setErrors(data.errors)
+        }
+    }
 
     console.log(formData)
 
@@ -31,37 +78,37 @@ function Login() {
                         <h3><span id="brand" style={{textDecorationLine: 'underline', fontStyle: 'bolder'}}>FuelRight</span> makes it simple</h3>
                     </div>
                 </div>
-                <section className="vh-100 gradient-custom">
+                <section className="gradient-custom">
                     <div className="container py-5 h-100">
                         <div className="row justify-content-center align-items-center h-100">
                             <div className="col-12 col-lg-9 col-xl-7">
                                 <div className="card shadow-2-strong card-registration" style={{borderRadius: "15px"}}>
                                     <div className="card-body p-4 p-md-5">
                                         <h3 className="mb-4 pb-2 pb-md-0 mb-md-5">FuelRight Signup</h3>
-                                        <Form onSubmit={() => console.log(formData)}>
+                                        <Form onSubmit={handleSignup}>
                                             <Form.Group className="mb-3" controlId="formBasicName">
                                                 <Form.Label>Name</Form.Label>
-                                                <Form.Control type="name" placeholder="Enter name" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})}/>
+                                                <Form.Control required type="name" placeholder="Enter name" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})}/>
                                             </Form.Group>
                                             
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                                 <Form.Label>Email</Form.Label>
-                                                <Form.Control type="email" placeholder="Enter email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
+                                                <Form.Control required type="email" placeholder="Enter email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
                                             </Form.Group>
 
                                             <Form.Group className="mb-3" controlId="formBasicPassword">
                                                 <Form.Label>Password</Form.Label>
-                                                <Form.Control type="password" placeholder="Password" value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})} />
+                                                <Form.Control required type="password" placeholder="Enter Password" value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})} />
                                             </Form.Group>
                                             
                                             <Form.Group className="mb-3" controlId="formBasicPasswordConfirmation">
                                                 <Form.Label>Password Confirmation</Form.Label>
-                                                <Form.Control type="password" placeholder="Password Confirmation" value={formData.passwordConfirmation} onChange={e => setFormData({...formData, password_confirmation: e.target.value})}/>
+                                                <Form.Control required type="password" placeholder="Password Confirmation" value={formData.passwordConfirmation} onChange={e => setFormData({...formData, password_confirmation: e.target.value})}/>
                                             </Form.Group>
                                             
                                             <Form.Group className="mb-3" controlId="formBasicWeight">
                                                 <Form.Label>Weight</Form.Label>
-                                                <Form.Control type="number" placeholder="Weight in lbs." value={formData.weight} onChange={e => setFormData({...formData, weight: parseInt(e.target.value)})}/>
+                                                <Form.Control required type="number" placeholder="Weight in lbs." value={formData.weight} onChange={e => setFormData({...formData, weight: parseInt(e.target.value)})}/>
                                             </Form.Group>
                                             <div style={{display: 'inline-flex', flexDirection: 'row'}}>
                                                 <Button variant="primary" type="submit">
@@ -69,12 +116,21 @@ function Login() {
                                                 </Button>
                                                 <p style={{marginLeft: '15px', marginBottom: '0px', marginTop: '5px'}}>Already have an account? Login <a className="link" onClick={() => setFormDisplayed(!formDisplayed)}>here</a> </p>
                                             </div>
+                                            {errors !== [] ? 
+                                            (<div>
+                                                {errors.map((error, index)=> (<p style={{color: 'red'}} key={index}>{error}</p>))}
+                                            </div>)
+                                            : null}
                                         </Form>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
                 </section>
                 </>
             ) : (
@@ -92,31 +148,36 @@ function Login() {
                             <h3><span id="brand" style={{textDecorationLine: 'underline', fontStyle: 'bolder'}}>FuelRight</span> makes it simple</h3>
                         </div>
                     </div> */}
-                    <section className="vh-100 gradient-custom">
-                        <div className="container py-5 h-100">
+                    <section className="gradient-custom" style={{minHeight: '100vh'}}>
+                        <div className="container py-6">
                             <div className="row justify-content-center align-items-center h-100">
                                 <div className="col-12 col-lg-9 col-xl-7">
                                     <div className="card shadow-2-strong card-registration" style={{borderRadius: "15px"}}>
                                         <div className="card-body p-4 p-md-5">
                                             <h3 className="mb-4 pb-2 pb-md-0 mb-md-5">FuelRight Signup</h3>
-                                            <Form>
+                                            <Form onSubmit={handleLogin}>
                                                 
                                                 <Form.Group className="mb-3" controlId="formBasicEmail">
                                                     <Form.Label>Email</Form.Label>
-                                                    <Form.Control type="email" placeholder="Enter email" />
+                                                    <Form.Control required type="email" placeholder="Enter email" value={existingUser.email} onChange={e => setExistingUser({...existingUser, email: e.target.value})}/>
                                                 </Form.Group>
 
                                                 <Form.Group className="mb-3" controlId="formBasicPassword">
                                                     <Form.Label>Password</Form.Label>
-                                                    <Form.Control type="password" placeholder="Password" />
+                                                    <Form.Control required type="password" placeholder="Enter Password" value={existingUser.password} onChange={e => setExistingUser({...existingUser, password: e.target.value})}/>
                                                 </Form.Group>
                                           
                                                 <div style={{display: 'inline-flex', flexDirection: 'row'}}>
                                                     <Button variant="primary" type="submit">
                                                         Login
                                                     </Button>
-                                                    <p style={{marginLeft: '15px', marginBottom: '0px', marginTop: '5px'}}>Back to <a className="link" onClick={() => setFormDisplayed(!formDisplayed)}>signup</a> </p>
+                                                    <p style={{marginLeft: '15px', marginBottom: '0px', marginTop: '5px'}}>Back to <a className="link" onClick={() => setFormDisplayed(!formDisplayed)}>Signup</a> </p>
                                                 </div>
+                                                {errors !== [] ? 
+                                                (<div>
+                                                    {errors.map((error, index)=> (<p style={{color: 'red'}} key={index}>{error}</p>))}
+                                                </div>)
+                                                : null}
                                             </Form>
                                         </div>
                                     </div>

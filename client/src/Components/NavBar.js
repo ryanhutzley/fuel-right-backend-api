@@ -1,4 +1,5 @@
 import { Navbar, Container, NavDropdown, Nav } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
 function NavBar() {
     return (
@@ -6,14 +7,14 @@ function NavBar() {
             <Container>
             <Navbar.Brand id="brand">FuelRight</Navbar.Brand>
                 <Nav className="me-auto">
-                    <Nav.Link to="/login">Login</Nav.Link>
-                    <Nav.Link to="/">Your Tracker</Nav.Link>
-                    <Nav.Link to="/day">Your Day</Nav.Link>
-                    <Nav.Link to="/history">Your History</Nav.Link>
+                    <Nav.Link className="link" as={Link} to="/login">Login</Nav.Link>
+                    <Nav.Link className="link" as={Link} to="/">Your Tracker</Nav.Link>
+                    <Nav.Link className="link" as={Link} to="/day">Your Day</Nav.Link>
+                    <Nav.Link className="link" as={Link} to="/history">Your History</Nav.Link>
                     <NavDropdown title="Your Profile" id="basic-nav-dropdown">
-                        <NavDropdown.Item to="/edit">Edit Profile</NavDropdown.Item>
+                        <NavDropdown.Item className="link" as={Link} to="/edit">Edit Profile</NavDropdown.Item>
                         <NavDropdown.Divider />
-                        <NavDropdown.Item to="/login">Logout</NavDropdown.Item>
+                        <NavDropdown.Item className="link" as={Link} to="/login">Logout</NavDropdown.Item>
                     </NavDropdown>
                 </Nav>
             </Container>

@@ -1,14 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Michroma&family=Open+Sans&display=swap');
 
-body {
+body, html {
     font-family: 'Open Sans', sans-serif;
     height: 100%;
-    width: 100%;
 }
 
 .bg {
     position: relative;
     background-image: url('https://cdn.wallpapersafari.com/49/88/UMHdes.jpg');
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -19,6 +21,19 @@ body {
 
 a {
     cursor: pointer;
+}
+
+.container {
+    height: 100%;
+}
+
+.py-6 {
+    padding-top: 9rem!important;
+    padding-bottom: 3rem!important;
+}
+
+section {
+    height: 100%;
 }
 
 /* .bg {
