@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(version: 2021_08_12_172955) do
     t.string "name"
     t.string "email"
     t.string "password"
+    t.string "password_confirmation"
     t.integer "weight"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
