@@ -1,63 +1,133 @@
 import { Form, Button } from 'react-bootstrap'
+import { NavLink } from 'react-router'
+import { useState } from 'react'
 
 function Login() {
-    return (
-        <>
-            <div style={{display: 'flex', alignItems:'center', flexDirection: 'column', textAlign: 'center', width: '80%', margin: 'auto'}}>
-                <h1 style={{marginTop: '50px', textAlign: 'center'}}>Welcome to <span id="brand" style={{textDecorationLine: 'underline'}}>FuelRight</span></h1>
-                <br></br>
-                <br></br>
-                <div style={{fontStyle: 'italic'}}>
-                    <h3>A digital lifestyle log so you can optimize your performance the arena of your choosing</h3>
-                    <br></br>
-                    <h3>Unlocking a better you is requires diligence and careful monitoring</h3>
-                    <br></br>
-                    <h3><span id="brand" style={{textDecorationLine: 'underline', fontStyle: 'normal'}}>FuelRight</span> makes it simple</h3>
-                </div>
-            </div>
-            <section className="vh-100 gradient-custom">
-                <div className="container py-5 h-100">
-                    <div className="row justify-content-center align-items-center h-100">
-                        <div className="col-12 col-lg-9 col-xl-7">
-                            <div className="card shadow-2-strong card-registration" style={{borderRadius: "15px"}}>
-                                <div className="card-body p-4 p-md-5">
-                                    <h3 className="mb-4 pb-2 pb-md-0 mb-md-5">FuelRight Signup</h3>
-                                    <Form>
-                                        <Form.Group className="mb-3" controlId="formBasicName">
-                                            <Form.Label>Name</Form.Label>
-                                            <Form.Control type="name" placeholder="Enter name" />
-                                        </Form.Group>
-                                        
-                                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                                            <Form.Label>Email</Form.Label>
-                                            <Form.Control type="email" placeholder="Enter email" />
-                                        </Form.Group>
+    const [formDisplayed, setFormDisplayed] = useState(true)
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        password: "",
+        password_confirmation: "",
+        weight: null
+    })
 
-                                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                                            <Form.Label>Password</Form.Label>
-                                            <Form.Control type="password" placeholder="Password" />
-                                        </Form.Group>
-                                        
-                                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                                            <Form.Label>Password Confirmation</Form.Label>
-                                            <Form.Control type="password" placeholder="Password" />
-                                        </Form.Group>
-                                        
-                                        <Form.Group className="mb-3" controlId="formBasicWeight">
-                                            <Form.Label>Weight</Form.Label>
-                                            <Form.Control type="number" placeholder="Weight in lbs." />
-                                        </Form.Group>
-                                        <Button variant="primary" type="submit">
-                                            Create Account
-                                        </Button>
-                                    </Form>
+    console.log(formData)
+
+    return (
+        <div>
+            {formDisplayed ? (
+                <>
+                <div style={{display: 'flex', alignItems:'center', flexDirection: 'column', textAlign: 'center', width: '80%', margin: 'auto', color: 'white'}}>
+                    <h1 style={{marginTop: '50px', textAlign: 'center'}}>Welcome to <span id="brand" style={{textDecorationLine: 'underline'}}>FuelRight</span></h1>
+                    <br></br>
+                    <br></br>
+                    <div>
+                        <h3 style={{fontStyle: 'italic'}}>A digital lifestyle log so you can optimize your performance in the arena of your choosing</h3>
+                        <br></br>
+                        <h3 style={{fontStyle: 'italic'}}>Unlocking a better you is hard...</h3>
+                        <br></br>
+                        <br></br>
+                        <h3><span id="brand" style={{textDecorationLine: 'underline', fontStyle: 'bolder'}}>FuelRight</span> makes it simple</h3>
+                    </div>
+                </div>
+                <section className="vh-100 gradient-custom">
+                    <div className="container py-5 h-100">
+                        <div className="row justify-content-center align-items-center h-100">
+                            <div className="col-12 col-lg-9 col-xl-7">
+                                <div className="card shadow-2-strong card-registration" style={{borderRadius: "15px"}}>
+                                    <div className="card-body p-4 p-md-5">
+                                        <h3 className="mb-4 pb-2 pb-md-0 mb-md-5">FuelRight Signup</h3>
+                                        <Form onSubmit={() => console.log(formData)}>
+                                            <Form.Group className="mb-3" controlId="formBasicName">
+                                                <Form.Label>Name</Form.Label>
+                                                <Form.Control type="name" placeholder="Enter name" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})}/>
+                                            </Form.Group>
+                                            
+                                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                <Form.Label>Email</Form.Label>
+                                                <Form.Control type="email" placeholder="Enter email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
+                                            </Form.Group>
+
+                                            <Form.Group className="mb-3" controlId="formBasicPassword">
+                                                <Form.Label>Password</Form.Label>
+                                                <Form.Control type="password" placeholder="Password" value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})} />
+                                            </Form.Group>
+                                            
+                                            <Form.Group className="mb-3" controlId="formBasicPasswordConfirmation">
+                                                <Form.Label>Password Confirmation</Form.Label>
+                                                <Form.Control type="password" placeholder="Password Confirmation" value={formData.passwordConfirmation} onChange={e => setFormData({...formData, password_confirmation: e.target.value})}/>
+                                            </Form.Group>
+                                            
+                                            <Form.Group className="mb-3" controlId="formBasicWeight">
+                                                <Form.Label>Weight</Form.Label>
+                                                <Form.Control type="number" placeholder="Weight in lbs." value={formData.weight} onChange={e => setFormData({...formData, weight: parseInt(e.target.value)})}/>
+                                            </Form.Group>
+                                            <div style={{display: 'inline-flex', flexDirection: 'row'}}>
+                                                <Button variant="primary" type="submit">
+                                                    Create Account
+                                                </Button>
+                                                <p style={{marginLeft: '15px', marginBottom: '0px', marginTop: '5px'}}>Already have an account? Login <a className="link" onClick={() => setFormDisplayed(!formDisplayed)}>here</a> </p>
+                                            </div>
+                                        </Form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
-        </>
+                </section>
+                </>
+            ) : (
+                <>
+                    {/* <div style={{display: 'flex', alignItems:'center', flexDirection: 'column', textAlign: 'center', width: '80%', margin: 'auto', color: 'white'}}>
+                        <h1 style={{marginTop: '50px', textAlign: 'center'}}>Welcome to <span id="brand" style={{textDecorationLine: 'underline'}}>FuelRight</span></h1>
+                        <br></br>
+                        <br></br>
+                        <div>
+                            <h3 style={{fontStyle: 'italic'}}>A digital lifestyle log so you can optimize your performance in the arena of your choosing</h3>
+                            <br></br>
+                            <h3 style={{fontStyle: 'italic'}}>Unlocking a better you is hard...</h3>
+                            <br></br>
+                            <br></br>
+                            <h3><span id="brand" style={{textDecorationLine: 'underline', fontStyle: 'bolder'}}>FuelRight</span> makes it simple</h3>
+                        </div>
+                    </div> */}
+                    <section className="vh-100 gradient-custom">
+                        <div className="container py-5 h-100">
+                            <div className="row justify-content-center align-items-center h-100">
+                                <div className="col-12 col-lg-9 col-xl-7">
+                                    <div className="card shadow-2-strong card-registration" style={{borderRadius: "15px"}}>
+                                        <div className="card-body p-4 p-md-5">
+                                            <h3 className="mb-4 pb-2 pb-md-0 mb-md-5">FuelRight Signup</h3>
+                                            <Form>
+                                                
+                                                <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                    <Form.Label>Email</Form.Label>
+                                                    <Form.Control type="email" placeholder="Enter email" />
+                                                </Form.Group>
+
+                                                <Form.Group className="mb-3" controlId="formBasicPassword">
+                                                    <Form.Label>Password</Form.Label>
+                                                    <Form.Control type="password" placeholder="Password" />
+                                                </Form.Group>
+                                          
+                                                <div style={{display: 'inline-flex', flexDirection: 'row'}}>
+                                                    <Button variant="primary" type="submit">
+                                                        Login
+                                                    </Button>
+                                                    <p style={{marginLeft: '15px', marginBottom: '0px', marginTop: '5px'}}>Back to <a className="link" onClick={() => setFormDisplayed(!formDisplayed)}>signup</a> </p>
+                                                </div>
+                                            </Form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </>
+            )
+            }
+        </div>
     )
 }
 

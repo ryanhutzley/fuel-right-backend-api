@@ -16,23 +16,25 @@ function App() {
   return (
     <div className="App">
       <NavBar />
-      <Switch>
-        <Route exact path="/">
-          {user ? <TrackerForm /> : <Login />}
-        </Route>
-        <Route exact path="/day">
-          {user ? <DailyLog /> : <Login />}
-        </Route>
-        <Route exact path="/history">
-          {user ? <History /> : <Login />}
-        </Route>
-        <Route exact path="/edit">
-          {user ? <EditProfileForm /> : <Login />}
-        </Route>
-        <Route exact path="/login">
-          <Login />
-        </Route>
-      </Switch>
+      <div className="bg">
+        <Switch>
+          <Route exact path="/">
+            {user ? <TrackerForm /> : <Login />}
+          </Route>
+          <Route exact path="/day">
+            {user ? <DailyLog /> : <Login />}
+          </Route>
+          <Route exact path="/history">
+            {user ? <History /> : <Login />}
+          </Route>
+          <Route exact path="/edit">
+            {user ? <EditProfileForm /> : <Login />}
+          </Route>
+          <Route exact path="/login">
+            <Login />
+          </Route>
+        </Switch>
+      </div>
     </div>
   );
 }
