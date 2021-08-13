@@ -6,12 +6,13 @@ function Login() {
             <div style={{display: 'flex', alignItems:'center', flexDirection: 'column', textAlign: 'center', width: '80%', margin: 'auto'}}>
                 <h1 style={{marginTop: '50px', textAlign: 'center'}}>Welcome to <span id="brand" style={{textDecorationLine: 'underline'}}>FuelRight</span></h1>
                 <br></br>
+                <br></br>
                 <div style={{fontStyle: 'italic'}}>
-                    <h2>A digital lifestyle log so you can optimize your performance the arena of your choosing</h2>
+                    <h3>A digital lifestyle log so you can optimize your performance the arena of your choosing</h3>
                     <br></br>
-                    <h2>Unlocking a better you is requires diligence and careful monitoring</h2>
+                    <h3>Unlocking a better you is requires diligence and careful monitoring</h3>
                     <br></br>
-                    <h2><span id="brand" style={{textDecorationLine: 'underline', fontStyle: 'normal'}}>FuelRight</span> makes it simple</h2>
+                    <h3><span id="brand" style={{textDecorationLine: 'underline', fontStyle: 'normal'}}>FuelRight</span> makes it simple</h3>
                 </div>
             </div>
             <section className="vh-100 gradient-custom">
