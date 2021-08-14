@@ -12,7 +12,7 @@ import { useHistory } from 'react-router'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
-  const [user, setUser] = useState("hi")
+  const [user, setUser] = useState(null)
   
   const history = useHistory()
 
@@ -28,7 +28,8 @@ function App() {
     getUser()
   }, [])
 
-  async function logOut() {
+  async function logOut(e) {
+    e.preventDefault()
     const res = await fetch("/logout", {
       method: "DELETE"
     })
@@ -38,9 +39,11 @@ function App() {
     }
   }
 
+  console.log(user)
+
   return (
     <div className="App">
-      <NavBar />
+      <NavBar user={user} logout={logOut}/>
       <div className="bg">
         <Switch>
           <Route exact path="/">

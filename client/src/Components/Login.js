@@ -19,6 +19,19 @@ function Login({ setUser }) {
 
     const history = useHistory()
 
+    function handleClick() {
+        setFormDisplayed(!formDisplayed)
+        setFormData({
+            name: "",
+            email: "",
+            password: "",
+            password_confirmation: "",
+            weight: ""
+        })
+        setExistingUser({ email: "", password: "" })
+        setErrors([])
+    }
+
     async function handleSignup(e) {
         e.preventDefault()
         const res = await fetch("/signup", {
@@ -34,19 +47,22 @@ function Login({ setUser }) {
         } else {
             console.log(data)
             setErrors(data.errors)
+            setFormData({
+                name: "",
+                email: "",
+                password: "",
+                password_confirmation: "",
+                weight: ""
+            })
         }
     }
 
     async function handleLogin(e) {
         e.preventDefault()
-        const credentials = {
-            email: "",
-            password: ""
-        }
         const res = await fetch("/login", {
           method: "POST",
           headers: {"Content-Type": "application/json"},
-          body: JSON.stringify(credentials)
+          body: JSON.stringify(existingUser)
         })
         const data = await res.json()
         if (res.ok) {
@@ -56,20 +72,22 @@ function Login({ setUser }) {
         } else {
             console.log(data)
             setErrors(data.errors)
+            setExistingUser({ email: "", password: "" })
         }
     }
 
     console.log(formData)
+    console.log(existingUser)
 
     return (
         <div>
             {formDisplayed ? (
                 <>
                 <div style={{display: 'flex', alignItems:'center', flexDirection: 'column', textAlign: 'center', width: '80%', margin: 'auto', color: 'white'}}>
-                    <h1 style={{marginTop: '50px', textAlign: 'center'}}>Welcome to <span id="brand" style={{textDecorationLine: 'underline'}}>FuelRight</span></h1>
-                    <br></br>
-                    <br></br>
-                    <div>
+                    <div id="intro">
+                        <h1 style={{marginTop: '50px', textAlign: 'center'}}>Welcome to <span id="brand" style={{textDecorationLine: 'underline'}}>FuelRight</span></h1>
+                        <br></br>
+                        <br></br>
                         <h3 style={{fontStyle: 'italic'}}>A digital lifestyle log so you can optimize your performance in the arena of your choosing</h3>
                         <br></br>
                         <h3 style={{fontStyle: 'italic'}}>Unlocking a better you is hard...</h3>
@@ -84,7 +102,7 @@ function Login({ setUser }) {
                             <div className="col-12 col-lg-9 col-xl-7">
                                 <div className="card shadow-2-strong card-registration" style={{borderRadius: "15px"}}>
                                     <div className="card-body p-4 p-md-5">
-                                        <h3 className="mb-4 pb-2 pb-md-0 mb-md-5">FuelRight Signup</h3>
+                                        <h3 className="mb-4 pb-2 pb-md-0 mb-md-3">FuelRight Signup</h3>
                                         <Form onSubmit={handleSignup}>
                                             <Form.Group className="mb-3" controlId="formBasicName">
                                                 <Form.Label>Name</Form.Label>
@@ -103,22 +121,24 @@ function Login({ setUser }) {
                                             
                                             <Form.Group className="mb-3" controlId="formBasicPasswordConfirmation">
                                                 <Form.Label>Password Confirmation</Form.Label>
-                                                <Form.Control required type="password" placeholder="Password Confirmation" value={formData.passwordConfirmation} onChange={e => setFormData({...formData, password_confirmation: e.target.value})}/>
+                                                <Form.Control required type="password" placeholder="Password Confirmation" value={formData.password_confirmation} onChange={e => setFormData({...formData, password_confirmation: e.target.value})}/>
                                             </Form.Group>
                                             
                                             <Form.Group className="mb-3" controlId="formBasicWeight">
                                                 <Form.Label>Weight</Form.Label>
-                                                <Form.Control required type="number" placeholder="Weight in lbs." value={formData.weight} onChange={e => setFormData({...formData, weight: parseInt(e.target.value)})}/>
+                                                <Form.Control required type="text" placeholder="Weight in lbs." value={formData.weight} onChange={e => setFormData({...formData, weight: parseInt(e.target.value)})}/>
                                             </Form.Group>
                                             <div style={{display: 'inline-flex', flexDirection: 'row'}}>
                                                 <Button variant="primary" type="submit">
                                                     Create Account
                                                 </Button>
-                                                <p style={{marginLeft: '15px', marginBottom: '0px', marginTop: '5px'}}>Already have an account? Login <a className="link" onClick={() => setFormDisplayed(!formDisplayed)}>here</a> </p>
+                                                <p style={{marginLeft: '15px', marginBottom: '0px', marginTop: '5px'}}>Already have an account? Login <a className="link" onClick={handleClick}>here</a> </p>
                                             </div>
+                                            <br></br>
+                                            <br></br>
                                             {errors !== [] ? 
                                             (<div>
-                                                {errors.map((error, index)=> (<p style={{color: 'red'}} key={index}>{error}</p>))}
+                                                {errors.map((error, index)=> (<p style={{color: 'red', marginBottom: '0px', marginTop: '10px'}} key={index}>{error}</p>))}
                                             </div>)
                                             : null}
                                         </Form>
@@ -171,11 +191,12 @@ function Login({ setUser }) {
                                                     <Button variant="primary" type="submit">
                                                         Login
                                                     </Button>
-                                                    <p style={{marginLeft: '15px', marginBottom: '0px', marginTop: '5px'}}>Back to <a className="link" onClick={() => setFormDisplayed(!formDisplayed)}>Signup</a> </p>
+                                                    <p style={{marginLeft: '15px', marginBottom: '0px', marginTop: '5px'}}>Back to <a className="link" onClick={handleClick}>Signup</a> </p>
                                                 </div>
+                                                <br></br>
                                                 {errors !== [] ? 
                                                 (<div>
-                                                    {errors.map((error, index)=> (<p style={{color: 'red'}} key={index}>{error}</p>))}
+                                                    {errors.map((error, index)=> (<p style={{color: 'red', marginBottom: '0px', marginTop: '10px'}} key={index}>{error}</p>))}
                                                 </div>)
                                                 : null}
                                             </Form>
