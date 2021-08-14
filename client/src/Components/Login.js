@@ -34,6 +34,7 @@ function Login({ setUser }) {
 
     async function handleSignup(e) {
         e.preventDefault()
+        e.target.blur()
         const res = await fetch("/signup", {
             method: "POST",
             headers: {"Content-type": "application/json"},
@@ -59,6 +60,7 @@ function Login({ setUser }) {
 
     async function handleLogin(e) {
         e.preventDefault()
+        e.target.blur()
         const res = await fetch("/login", {
           method: "POST",
           headers: {"Content-Type": "application/json"},
@@ -84,7 +86,7 @@ function Login({ setUser }) {
             {formDisplayed ? (
                 <>
                 <div style={{display: 'flex', alignItems:'center', flexDirection: 'column', textAlign: 'center', width: '80%', margin: 'auto', color: 'white'}}>
-                    <div id="intro">
+                    <div id="pop">
                         <h1 style={{marginTop: '50px', textAlign: 'center'}}>Welcome to <span id="brand" style={{textDecorationLine: 'underline'}}>FuelRight</span></h1>
                         <br></br>
                         <br></br>

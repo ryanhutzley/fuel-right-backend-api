@@ -13,6 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const [user, setUser] = useState(null)
+  const [schedules, setSchedules] = useState([])
   
   const history = useHistory()
 
