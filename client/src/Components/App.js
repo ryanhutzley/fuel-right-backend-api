@@ -17,16 +17,12 @@ function App() {
   const history = useHistory()
 
   useEffect(() => {
-    async function getUser() {
-      const res = await fetch("/me")
-      if (res.ok) {
-        const json = await res.json()
-        setUser(json)
-        history.push("/")
+    fetch("/me").then((response) => {
+      if (response.ok) {
+        response.json().then((user) => setUser(user));
       }
-    }
-    getUser()
-  }, [])
+    });
+  }, []);
 
   async function logOut(e) {
     e.preventDefault()
