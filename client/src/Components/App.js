@@ -36,6 +36,10 @@ function App() {
     }
   }
 
+  function addEntry(action, payload) {
+    console.log(`${action}s`, payload)
+  }
+
   console.log(user)
 
   return (
@@ -44,7 +48,7 @@ function App() {
       <div className="bg">
         <Switch>
           <Route exact path="/">
-            {user ? <TrackerForm /> : <Login />}
+            {user ? <TrackerForm addEntry={addEntry} /> : <Login />}
           </Route>
           <Route exact path="/day">
             {user ? <DailyLog /> : <Login />}
