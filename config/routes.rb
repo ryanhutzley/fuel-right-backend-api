@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
-  resources :activities
-  resources :foods
-  resources :bedtimes
-  resources :wakeups
-  resources :schedules
+  resources :activities, only: [:create]
+  resources :foods, only: [:create]
+  resources :bedtimes, only: [:create]
+  resources :wakeups, only: [:create]
+  resources :schedules, only: [:index, :show]
   resources :users, except: [:create, :show]
 
   post "/signup", to: "users#create"

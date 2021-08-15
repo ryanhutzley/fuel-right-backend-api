@@ -14,20 +14,22 @@ function TrackerForm({ addEntry }) {
 
     function handleSubmit(e) {
         e.preventDefault()
-        if (selected.wakeup) {
-            // addEntry(action, time)
+        if (selected.wakeup) {   
+            let payload = { time }
+            addEntry(action.toLowerCase(), payload)
         }
         else if (selected.food) {
-            let payload = foods.map(el => el.time = time)
-            console.log(payload)
-            // addEntry(action, payload)
+            let payload = foods.map(el => {
+                return {...el, time}
+            })
+            addEntry(action.toLowerCase(), payload)
         }
         else if (selected.activity) {
             let payload = {...activity, time: time}
-            console.log(payload)
-            // addEntry(action, payload)
+            addEntry(action.toLowerCase(), payload)
         } else if (selected.bedtime) {
-            // addEntry(action, time)
+            let payload = { time }
+            addEntry(action.toLowerCase(), payload)
         }
     }
 
@@ -43,7 +45,7 @@ function TrackerForm({ addEntry }) {
         setFoods(foodsCopy)
     }
 
-    function handleChange(e) {
+    function handleActionChange(e) {
         setAction(e.target.value)
         if (e.target.value === "Food") {
             setSelected({ wakeup: false, food: true, activity: false, bedtime: false })
@@ -103,7 +105,7 @@ function TrackerForm({ addEntry }) {
 
                                         <Form.Group className="mb-3" controlId="formBasicAction">
                                             <Form.Label>Action</Form.Label>
-                                            <Form.Control required list="action-list" type="text" value={action} onChange={handleChange}/>
+                                            <Form.Control required list="action-list" type="text" value={action} onChange={handleActionChange}/>
                                             <datalist id="action-list">
                                                 <option value="Wakeup"/>
                                                 <option value="Food" />
@@ -111,7 +113,6 @@ function TrackerForm({ addEntry }) {
                                                 <option value="Bedtime"/>
                                             </datalist>
                                         </Form.Group>
-                                        {/* {conditionalRender(action)} */}
                                         {selected.food ? (
                                             foods.map((food, index) => {
                                                 return (
@@ -136,10 +137,10 @@ function TrackerForm({ addEntry }) {
                                             <Form.Group className="mb-3" controlId="formBasicFood">
                                                 <Form.Label>Type of activity</Form.Label>
                                                 <Form.Control required type="text" value={activity.name} onChange={e => setActivity({...activity, name: e.target.value})}/>
-                                                <Form.Label>Duration</Form.Label>
-                                                <Form.Control required type="text" value={activity.duration} onChange={e => setActivity({...activity, duration: parseInt(e.target.value)})}/>
+                                                <Form.Label>Duration (mins.)</Form.Label>
+                                                <Form.Control required type="text" value={activity.duration} onChange={e => setActivity({...activity, duration: e.target.value})}/>
                                                 <Form.Label>Rate Perceived Effort</Form.Label>
-                                                <Form.Control required type="text" value={activity.perceived_effort} onChange={e => setActivity({...activity, perceived_effort: parseInt(e.target.value)})}/>
+                                                <Form.Control required type="text" value={activity.perceived_effort} onChange={e => setActivity({...activity, perceived_effort: e.target.value})}/>
                                             </Form.Group>
                                         ) : null}
                                         <Button variant="primary" type="submit">
@@ -157,56 +158,3 @@ function TrackerForm({ addEntry }) {
 }
 
 export default TrackerForm
-
-
-    // const [foodSelected, setFoodSelected] = useState(false)
-    // const [activitySelected, setActivitySelected] = useState(false)
-    // const [wakeupSelected, setWakeupSelected] = useState(false)
-    // const [bedtimeSelected, setBedtimeSelected] = useState(false)
-    // 
-    // const input = (
-    //     <>
-    //         {/* <div style={{display: 'inline-flex', flexDirection: 'row', flexWrap: 'wrap'}}> */}
-    //             <Form.Group className="mb-3" controlId="formBasicFood">
-    //                 <Form.Label>Type of Food</Form.Label>
-    //                 <Form.Control required type="text" onChange={e => console.log(e)}/>
-    //                 <Form.Label>Quantity (oz.)</Form.Label>
-    //                 <Form.Control required type="text" onChange={e => console.log(e)}/>
-    //             </Form.Group>
-    //         {/* </div> */}
-    //         <Button variant="secondary" type="button" onClick={() => setFoodInputs([...foodInputs, input])}>Add Foods</Button>
-    //         <br></br>
-    //         <br></br>
-    //     </>
-    // )
-
-    // const activityField = (
-    //      // <div style={{display: 'inline-flex', flexDirection: 'row', flexWrap: 'wrap'}}>
-    //         <Form.Group className="mb-3" controlId="formBasicFood">
-    //             <Form.Label>Type of Exercise</Form.Label>
-    //             <Form.Control required type="text" onChange={e => console.log(e)}/>
-    //             <Form.Label>Duration</Form.Label>
-    //             <Form.Control required type="text" onChange={e => console.log(e)}/>
-    //             <Form.Label>Rate Perceived Effort</Form.Label>
-    //             <Form.Control required type="text" onChange={e => console.log(e)}/>
-    //         </Form.Group>
-    //     // </div>
-    // )
-
-    // function handleSubmit() {}
-
-    // function addInput() {
-    //     return (
-    //         <>
-    //             {/* <div style={{display: 'inline-flex', flexDirection: 'row', flexWrap: 'wrap'}}> */}
-    //                 <Form.Group className="mb-3" controlId="formBasicFood">
-    //                     <Form.Label>Time</Form.Label>
-    //                     <Form.Control required type="time" onChange={e => console.log(e)}/>
-    //                 </Form.Group>
-    //             {/* </div> */}
-    //             <Button variant="secondary" type="button" onClick={() => setFoodInputs([...foodInputs, input])}>Add Foods</Button>
-    //             <br></br>
-    //             <br></br>
-    //         </>
-    //     )
-    // }

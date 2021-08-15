@@ -20,7 +20,12 @@ function App() {
   useEffect(() => {
     fetch("/me").then((response) => {
       if (response.ok) {
-        response.json().then((user) => setUser(user));
+        response.json().then((user) => {
+          setUser(user)
+          fetch('/schedules')
+          .then(res => res.json())
+          .then(data => setSchedules(data))
+        });
       }
     });
   }, []);
@@ -36,8 +41,16 @@ function App() {
     }
   }
 
-  function addEntry(action, payload) {
-    console.log(`${action}s`, payload)
+  async function addEntry(action, payload) {
+    const res = await fetch(`/${action}s`, {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify(payload)
+    })
+    const data = await res.json()
+    if (res.ok) {
+
+    }
   }
 
   console.log(user)
