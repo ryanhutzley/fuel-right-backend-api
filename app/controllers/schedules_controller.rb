@@ -2,8 +2,9 @@ class SchedulesController < ApplicationController
 
     def index
         user = User.find_by(id: session[:user_id])
+        byebug
         schedules = Schedule.where(user_id: user.id)
-        render json: schedules.to_json(include: [:wakeups, :activities, :foods, :bedtimes])
+        render json: schedules.to_json(include: [:wakeup, :activities, :foods, :bedtime])
     end
 
     def show

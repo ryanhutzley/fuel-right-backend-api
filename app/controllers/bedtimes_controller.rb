@@ -2,16 +2,12 @@ class BedtimesController < ApplicationController
 
     def create
         user = User.find_by(id: session[:user_id])
-        schedule = Schedule.find_by(user_id: user.id, date: params[:date])
+        date = Date.parse(params[:date])
         byebug
-        if schedule
-            schedule.create_bedtime!(bedtime_params)
-            render json: schedule.to_json(include: [:wakeup, :activities, :foods, :bedtime])
-        else
-            s = Schedule.create(user_id: user.id, date: date)
-            s.create_bedtime!(bedtime_params)
-            render json: s.to_json(include: [:wakeup, :activities, :foods, :bedtime])
-        end
+        schedule = Schedule.find_or_create_by(user_id: user.id, date: date)
+        time = Time.parse(params[:time], date)
+        schedule.create_bedtime!(time: time)
+        render json: schedule.to_json(include: [:wakeup, :activities, :foods, :bedtime])
     end
 
     private
