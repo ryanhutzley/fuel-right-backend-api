@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   resources :bedtimes, only: [:create]
   resources :wakeups, only: [:create]
   resources :schedules, only: [:index, :show]
-  resources :users, except: [:create, :show]
+  resources :users, except: [:create]
+
+  get "/schedule_today", to: "schedules#today"
 
   post "/signup", to: "users#create"
   get "/me", to: "users#show" 

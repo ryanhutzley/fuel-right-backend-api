@@ -36,8 +36,13 @@ section {
     height: 100%;
 }
 
-div#pop {
+#pop {
     text-shadow: 0 0 3px black, 0 0 5px #0000FF;
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
 }
 
 /* .bg {

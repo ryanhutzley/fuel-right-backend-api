@@ -3,7 +3,7 @@ class FoodsController < ApplicationController
     def create
         user = User.find_by(id: session[:user_id])
         date = Date.parse(params[:_json][0][:date])
-        byebug
+        # byebug
         schedule = Schedule.find_or_create_by(user_id: user.id, date: date)
         food_params[:_json].each do |obj|
             time = Time.parse(obj[:time], date)

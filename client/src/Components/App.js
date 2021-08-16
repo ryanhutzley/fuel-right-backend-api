@@ -15,6 +15,7 @@ function App() {
   const [user, setUser] = useState(null)
   const [schedules, setSchedules] = useState([])
   const [displayForm, setDisplayForm] = useState(true)
+  const [scheduleCheck, setScheduleCheck] = useState(true)
   
   const history = useHistory()
 
@@ -29,7 +30,7 @@ function App() {
         });
       }
     });
-  }, []);
+  }, [scheduleCheck]);
 
   async function logOut(e) {
     e.preventDefault()
@@ -55,10 +56,11 @@ function App() {
     console.log(data)
     if (res.ok) {
       setDisplayForm(false)
+      setScheduleCheck(!scheduleCheck)
     }
   }
 
-  console.log(user)
+  console.log(user, schedules)
 
   return (
     <div className="App">
@@ -69,7 +71,7 @@ function App() {
             {user ? <TrackerForm addEntry={addEntry} displayForm={displayForm} setDisplayForm={setDisplayForm} /> : <Login />}
           </Route>
           <Route exact path="/day">
-            {user ? <DailyLog /> : <Login />}
+            {user ? <DailyLog schedules={schedules} /> : <Login />}
           </Route>
           <Route exact path="/history">
             {user ? <History /> : <Login />}
@@ -78,7 +80,7 @@ function App() {
             {user ? <EditProfileForm /> : <Login />}
           </Route>
           <Route exact path="/login">
-            <Login setUser={setUser}/>
+            <Login setUser={setUser} setDisplayForm={setDisplayForm} />
           </Route>
         </Switch>
       </div>
