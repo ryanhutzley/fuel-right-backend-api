@@ -14,6 +14,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
   const [user, setUser] = useState(null)
   const [schedules, setSchedules] = useState([])
+  const [displayForm, setDisplayForm] = useState(true)
   
   const history = useHistory()
 
@@ -51,8 +52,9 @@ function App() {
       body: JSON.stringify(payload)
     })
     const data = await res.json()
+    console.log(data)
     if (res.ok) {
-
+      setDisplayForm(false)
     }
   }
 
@@ -64,7 +66,7 @@ function App() {
       <div className="bg">
         <Switch>
           <Route exact path="/">
-            {user ? <TrackerForm addEntry={addEntry} /> : <Login />}
+            {user ? <TrackerForm addEntry={addEntry} displayForm={displayForm} setDisplayForm={setDisplayForm} /> : <Login />}
           </Route>
           <Route exact path="/day">
             {user ? <DailyLog /> : <Login />}

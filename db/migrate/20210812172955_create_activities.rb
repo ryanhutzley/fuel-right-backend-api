@@ -5,7 +5,7 @@ class CreateActivities < ActiveRecord::Migration[6.1]
       t.string :name
       t.integer :perceived_effort
       t.integer :duration
-      t.time :time
+      t.datetime :time
 
       t.timestamps
     end

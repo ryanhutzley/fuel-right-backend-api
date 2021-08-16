@@ -4,7 +4,7 @@ class CreateFoods < ActiveRecord::Migration[6.1]
       t.belongs_to :schedule, null: false, foreign_key: true
       t.string :name
       t.integer :portion
-      t.time :time
+      t.datetime :time
 
       t.timestamps
     end

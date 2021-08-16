@@ -1,8 +1,9 @@
 import { Form, Button } from 'react-bootstrap'
 import { useState } from 'react'
 
-function TrackerForm({ addEntry }) {
+function TrackerForm({ addEntry, displayForm, setDisplayForm }) {
     const [action, setAction] = useState("")
+    const [date, setDate] = useState("")
     const [time, setTime] = useState("")
     const [activity, setActivity] = useState({
         name: "",
@@ -15,21 +16,43 @@ function TrackerForm({ addEntry }) {
     function handleSubmit(e) {
         e.preventDefault()
         if (selected.wakeup) {   
-            let payload = { time }
+            let payload = { date, time }
             addEntry(action.toLowerCase(), payload)
+            setSelected({...selected, wakeup: false})
+            setTime("")
+            setDate("")
+            setAction("")
+            // setDisplayForm(false)
         }
         else if (selected.food) {
             let payload = foods.map(el => {
-                return {...el, time}
+                return {...el, date, time}
             })
             addEntry(action.toLowerCase(), payload)
+            setSelected({...selected, food: false})
+            setTime("")
+            setDate("")
+            setFoods([{ name: "", portion: 0 }])
+            setAction("")
+            // setDisplayForm(false)
         }
         else if (selected.activity) {
-            let payload = {...activity, time: time}
+            let payload = {...activity, date: date, time: time}
             addEntry(action.toLowerCase(), payload)
+            setSelected({...selected, activity: false})
+            setTime("")
+            setDate("")
+            setActivity({ name: "", duration: 0, perceived_effort: 0 })
+            setAction("")
+            // setDisplayForm(false)
         } else if (selected.bedtime) {
-            let payload = { time }
+            let payload = { date, time }
             addEntry(action.toLowerCase(), payload)
+            setSelected({...selected, bedtime: false})
+            setTime("")
+            setDate("")
+            setAction("")
+            // setDisplayForm(false)
         }
     }
 
@@ -80,13 +103,12 @@ function TrackerForm({ addEntry }) {
         }
     }
 
-    console.log(time, action, selected, activity, foods)
+    console.log(time, date, action, selected, activity, foods)
 
     return (
+
         <>
-            {/* <div id="pop" style={{color: 'white'}}>
-                <h1>Tracker</h1>
-            </div> */}
+            {displayForm ? (
             <section className="gradient-custom" style={{minHeight: '100vh'}}>
                 <div className="container py-6">
                     <div className="row justify-content-center align-items-center h-100">
@@ -98,6 +120,11 @@ function TrackerForm({ addEntry }) {
                                         <Form.Text>Please provide information regarding your food consumption and activity results so that we can help get you on the path to success!</Form.Text>
                                         <br></br>
                                         <br></br>
+                                        <Form.Group className="mb-3" controlId="formBasicDate">
+                                            <Form.Label>Date</Form.Label>
+                                            <Form.Control required type="date" value={date} onChange={e => setDate(e.target.value)}/>
+                                        </Form.Group>
+                                        
                                         <Form.Group className="mb-3" controlId="formBasicTime">
                                             <Form.Label>Time</Form.Label>
                                             <Form.Control required type="time" value={time} onChange={e => setTime(e.target.value)}/>
@@ -139,7 +166,10 @@ function TrackerForm({ addEntry }) {
                                                 <Form.Control required type="text" value={activity.name} onChange={e => setActivity({...activity, name: e.target.value})}/>
                                                 <Form.Label>Duration (mins.)</Form.Label>
                                                 <Form.Control required type="text" value={activity.duration} onChange={e => setActivity({...activity, duration: e.target.value})}/>
-                                                <Form.Label>Rate Perceived Effort</Form.Label>
+                                                <br></br>
+                                                <Form.Label>Rate Perceived Effort</Form.Label> 
+                                                <br></br>
+                                                <Form.Text>(How did this workout feel compared to past efforts of similar intensity/duration? scale: 1-10, 1 = way worse, 5 = the same, 10 = way better)</Form.Text>
                                                 <Form.Control required type="text" value={activity.perceived_effort} onChange={e => setActivity({...activity, perceived_effort: e.target.value})}/>
                                             </Form.Group>
                                         ) : null}
@@ -152,7 +182,22 @@ function TrackerForm({ addEntry }) {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> ) : (
+                <section className="gradient-custom" style={{minHeight: '100vh'}}>
+                    <div className="container py-6">
+                        <div className="row justify-content-center align-items-center h-100">
+                            <div className="col-12 col-lg-9 col-xl-7">
+                                <div className="card shadow-2-strong card-registration" style={{borderRadius: "15px"}}>
+                                    <div className="card-body p-4 p-md-5">
+                                            <h3 className="mb-4 pb-2 pb-md-0 mb-md-3">Your entry has been recorded!</h3>
+                                            <a className="link" onClick={() => setDisplayForm(true)}>Make another submission</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            )}
         </>
     )
 }
