@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 2021_08_12_172955) do
 
   create_table "schedules", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.time "date"
+    t.string "date"
     t.boolean "is_starred"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

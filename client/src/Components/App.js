@@ -42,6 +42,9 @@ function App() {
   }
 
   async function addEntry(action, payload) {
+    if (action === 'activity') {
+      action = 'activitie'
+    }
     const res = await fetch(`/${action}s`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
