@@ -1,21 +1,25 @@
 import { Table, Button } from 'react-bootstrap'
 import { useEffect, useState } from 'react'
 
-function DailyLog({ schedules, index, setIndex, getSingleSchedule, displayedSchedule }) {
-    
+function DailyLog({ schedules, index, setIndex, getSingleSchedule, displayedSchedule, setDisplayForm }) {
 
+    setDisplayForm(true)
+    
+    const regex = /\d+:\d+/g
+
+    console.log(displayedSchedule)
     
     return (
         <div style={{minHeight: '100vh'}}>
             <br></br>
             <br></br>
             <br></br>
-            <div style={{display: 'flex', justifyContent: 'space-between', width: '50%', margin: 'auto'}}>
-                <Button variant="primary" type="button" style={{width: '93px'}}>Previous Day</Button>
-                <h1 id="pop" style={{color: 'white'}}>Today's Date</h1>
-                <Button variant="primary" type="button" style={{width: '93px'}}>Next Day</Button>
-            </div>
+            <h1 id="pop" style={{color: 'white', textAlign: 'center'}}>{displayedSchedule ? `${displayedSchedule[0].date}` : null}</h1>
             <br></br>
+            <div style={{display: 'flex', justifyContent: 'space-between', width: '15%', margin: 'auto'}}>
+                {index > 0 ? <Button variant="primary" type="button" style={{width: '100px'}}>Previous</Button> : null}
+                {index < schedules.length - 1 ? <Button variant="primary" type="button" style={{width: '93px'}}>Next</Button> : null}
+            </div>
             <br></br>
             <Table striped bordered hover variant="dark" style={{width: '80%', margin: 'auto'}}>
                 <thead>
@@ -23,15 +27,54 @@ function DailyLog({ schedules, index, setIndex, getSingleSchedule, displayedSche
                         <th>Time</th>
                         <th>Action</th>
                         <th>Type(s)</th>
-                        <th>Details (Food: quantity, Activity: duration, RPE)</th>
+                        <th>Details</th>
                     </tr>
                 </thead>
                 <tbody>
                     {displayedSchedule ? (
-                        displayedSchedule.map(action => {
+                        displayedSchedule[1].map((action, index) => {
                             if (action.wakeup) {
                                 return (
-                                    <tr>
+                                    <tr key={index}>
+                                        <td>{action.time.match(regex)[0]}</td>
+                                        <td>Wakeup</td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                )
+                            } else if (action.foods) {
+                                let names = []
+                                let portions = []
+                                action.foods.forEach(food => {
+                                    let capitalized = food.name.charAt(0).toUpperCase() + food.name.slice(1)
+                                    names.push(capitalized)
+                                    portions.push(`${food.portion} oz.`)
+                                })
+                                let groupedNames = names.join(', ')
+                                let groupedPortions = portions.join(', ')
+                                return (
+                                    <tr key={index}>
+                                        <td>{action.time.match(regex)[0]}</td>
+                                        <td>Food</td>
+                                        <td>{groupedNames}</td>
+                                        <td>{groupedPortions}</td>
+                                    </tr>
+                                )
+                            } else if (action.duration) {
+                                return (
+                                    <tr key={index}>
+                                        <td>{action.time.match(regex)[0]}</td>
+                                        <td>Activity</td>
+                                        <td>{action.name}</td>
+                                        <td>{action.duration} mins., RPE: {action.perceived_effort}</td>
+                                    </tr>
+                                )
+                            } else if (action.bedtime) {
+                                return (
+                                    <tr key={index}>
+                                        <td>{action.time.match(regex)[0]}</td>
+                                        <td>Bedtime</td>
+                                        <td></td>
                                         <td></td>
                                     </tr>
                                 )

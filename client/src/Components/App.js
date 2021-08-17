@@ -44,7 +44,7 @@ function App() {
   function getSingleSchedule(id) {
     fetch(`schedules/${id}`)
     .then(res => res.json())
-    .then(console.log)
+    .then(data => setDisplayedSchedule(data))
   }
 
   async function logOut(e) {
@@ -86,10 +86,10 @@ function App() {
             {user ? <TrackerForm addEntry={addEntry} displayForm={displayForm} setDisplayForm={setDisplayForm} /> : <Login />}
           </Route>
           <Route exact path="/day">
-            {user ? <DailyLog schedules={schedules} index={index} setIndex={setIndex} getSingleSchedule={getSingleSchedule} displayedSchedule={displayedSchedule}/> : <Login />}
+            {user ? <DailyLog schedules={schedules} index={index} setIndex={setIndex} getSingleSchedule={getSingleSchedule} displayedSchedule={displayedSchedule} setDisplayForm={setDisplayForm}/> : <Login />}
           </Route>
           <Route exact path="/history">
-            {user ? <History /> : <Login />}
+            {user ? <History setDisplayForm={setDisplayForm} /> : <Login />}
           </Route>
           <Route exact path="/edit">
             {user ? <EditProfileForm /> : <Login />}
