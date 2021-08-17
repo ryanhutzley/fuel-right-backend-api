@@ -89,10 +89,10 @@ function App() {
             {user ? <DailyLog schedules={schedules} index={index} setIndex={setIndex} getSingleSchedule={getSingleSchedule} displayedSchedule={displayedSchedule} setDisplayForm={setDisplayForm}/> : <Login />}
           </Route>
           <Route exact path="/history">
-            {user ? <History setDisplayForm={setDisplayForm} /> : <Login />}
+            {user ? <History setDisplayForm={setDisplayForm} user={user} /> : <Login />}
           </Route>
           <Route exact path="/edit">
-            {user ? <EditProfileForm /> : <Login />}
+            {user ? <EditProfileForm user={user} /> : <Login />}
           </Route>
           <Route exact path="/login">
             <Login setUser={setUser} setDisplayForm={setDisplayForm} />

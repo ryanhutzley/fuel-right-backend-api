@@ -7,6 +7,22 @@ function DailyLog({ schedules, index, setIndex, getSingleSchedule, displayedSche
     
     const regex = /\d+:\d+/g
 
+    function handlePrevious(e) {
+        if (index !== 0) {
+            let newIndex = index - 1
+            getSingleSchedule(schedules[newIndex].id)
+            setIndex(newIndex)
+        }
+    }
+
+    function handleNext(e) {
+        if (index !== schedules.length - 1) {
+            let newIndex = index + 1
+            getSingleSchedule(schedules[newIndex].id)
+            setIndex(newIndex)
+        }
+    }
+
     console.log(displayedSchedule)
     
     return (
@@ -16,9 +32,9 @@ function DailyLog({ schedules, index, setIndex, getSingleSchedule, displayedSche
             <br></br>
             <h1 id="pop" style={{color: 'white', textAlign: 'center'}}>{displayedSchedule ? `${displayedSchedule[0].date}` : null}</h1>
             <br></br>
-            <div style={{display: 'flex', justifyContent: 'space-between', width: '15%', margin: 'auto'}}>
-                {index > 0 ? <Button variant="primary" type="button" style={{width: '100px'}}>Previous</Button> : null}
-                {index < schedules.length - 1 ? <Button variant="primary" type="button" style={{width: '93px'}}>Next</Button> : null}
+            <div style={{display: 'flex', justifyContent: 'center', width: '15%', margin: 'auto'}}>
+                {index > 0 ? <Button variant="primary" type="button" onClick={handlePrevious} style={{width: '100px'}}>Previous</Button> : null}
+                {index < schedules.length - 1 ? <Button variant="primary" type="button" onClick={handleNext} style={{width: '93px'}}>Next</Button> : null}
             </div>
             <br></br>
             <Table striped bordered hover variant="dark" style={{width: '80%', margin: 'auto'}}>
