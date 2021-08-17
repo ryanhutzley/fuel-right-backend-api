@@ -45,6 +45,14 @@ section {
     margin: 0 auto;
 }
 
+svg.recharts-surface {
+    background-color: white !important;
+}
+
+div.recharts-responsive-container {
+    margin: auto;
+}
+
 /* .bg {
     position: relative;
     background: #696969;
