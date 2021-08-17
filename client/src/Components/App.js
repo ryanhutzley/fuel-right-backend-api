@@ -16,6 +16,8 @@ function App() {
   const [schedules, setSchedules] = useState([])
   const [displayForm, setDisplayForm] = useState(true)
   const [scheduleCheck, setScheduleCheck] = useState(true)
+  const [index, setIndex] = useState(0)
+  const [displayedSchedule, setDisplayedSchedule] = useState(null)
   
   const history = useHistory()
 
@@ -26,11 +28,24 @@ function App() {
           setUser(user)
           fetch('/schedules')
           .then(res => res.json())
-          .then(data => setSchedules(data))
+          .then(data => {
+            if (data.length !== 0) {
+              setSchedules(data)
+              setIndex(data.length - 1)
+              getSingleSchedule(data[data.length - 1].id)
+              console.log(data)
+            }
+          })
         });
       }
     });
   }, [scheduleCheck]);
+
+  function getSingleSchedule(id) {
+    fetch(`schedules/${id}`)
+    .then(res => res.json())
+    .then(console.log)
+  }
 
   async function logOut(e) {
     e.preventDefault()
@@ -60,7 +75,7 @@ function App() {
     }
   }
 
-  console.log(user, schedules)
+  console.log(user)
 
   return (
     <div className="App">
@@ -71,7 +86,7 @@ function App() {
             {user ? <TrackerForm addEntry={addEntry} displayForm={displayForm} setDisplayForm={setDisplayForm} /> : <Login />}
           </Route>
           <Route exact path="/day">
-            {user ? <DailyLog schedules={schedules} /> : <Login />}
+            {user ? <DailyLog schedules={schedules} index={index} setIndex={setIndex} getSingleSchedule={getSingleSchedule} displayedSchedule={displayedSchedule}/> : <Login />}
           </Route>
           <Route exact path="/history">
             {user ? <History /> : <Login />}

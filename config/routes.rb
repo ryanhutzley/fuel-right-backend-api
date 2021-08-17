@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   resources :schedules, only: [:index, :show]
   resources :users, except: [:create]
 
-  get "/schedule_today", to: "schedules#today"
+  # get "/schedule_today", to: "schedules#today"
 
   post "/signup", to: "users#create"
   get "/me", to: "users#show" 

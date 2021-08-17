@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 2021_08_12_172955) do
   create_table "bedtimes", force: :cascade do |t|
     t.bigint "schedule_id", null: false
     t.datetime "time"
+    t.string "bedtime", default: "bedtime"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["schedule_id"], name: "index_bedtimes_on_schedule_id"
@@ -65,6 +66,7 @@ ActiveRecord::Schema.define(version: 2021_08_12_172955) do
   create_table "wakeups", force: :cascade do |t|
     t.bigint "schedule_id", null: false
     t.datetime "time"
+    t.string "wakeup", default: "wakeup"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["schedule_id"], name: "index_wakeups_on_schedule_id"
