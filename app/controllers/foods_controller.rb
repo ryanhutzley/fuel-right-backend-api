@@ -19,9 +19,13 @@ class FoodsController < ApplicationController
         schedules.each do |s|
             foods.concat(s.foods)
         end
+        foods_with_name_change = foods.map do |f|
+            f[:name] = f[:name].titleize
+            f
+        end
         if foods.length != 0
-            food_names = foods.map{|f| f.name}
-            fav_food = foods.max_by do |f|
+            food_names = foods.map{|f| f.name.titleize}
+            fav_food = foods_with_name_change.max_by do |f|
                 matches = food_names.select{|name| f.name == name}
                 matches.count
             end
@@ -53,7 +57,8 @@ class FoodsController < ApplicationController
             best_food = preactivity_foods.max_by do |food|
                 schedule = Schedule.find_by(id: food[:schedule_id])
                 post_food_activities = schedule.activities.where("time > ?", food[:time])
-                post_food_activities[0][:perceived_effort]
+                closest_activity_to_food = post_food_activities.min_by{|a| a[:time]}
+                closest_activity_to_food[:perceived_effort]
                 # best_activity = post_food_activities.max_by do |a|
                 #     a[:perceived_effort]
                 # end
@@ -87,20 +92,24 @@ class FoodsController < ApplicationController
             preactivity_foods.each do |food|
                 schedule = Schedule.find_by(id: food[:schedule_id])
                 post_food_activities = schedule.activities.where("time > ?", food[:time])
-                rpe = post_food_activities[0][:perceived_effort]
-                # best_activity = post_food_activities.max_by do |a|
-                #     a[:perceived_effort]
-                # end
-                formatted_chart_data << {name: food.name, RPE: rpe}
+                closest_activity_to_food = post_food_activities.min_by{|a| a[:time]}
+                rpe = closest_activity_to_food[:perceived_effort]
+                formatted_chart_data << {name: food.name.titleize, RPE: rpe}
             end
+            final_data = []
+            names = []
             formatted_chart_data.each do |obj|
                 duplicates = formatted_chart_data.select{|o| o[:name] == obj[:name]}
-                obj_with_best_effort = duplicates.max_by{|d| d[:RPE]}
-                if obj_with_best_effort != obj
-                    formatted_chart_data.delete(obj)
+                if !names.include?(obj[:name])
+                    name = duplicates[0][:name]
+                    rpes = duplicates.map{|d| d[:RPE].to_f}
+                    total_rpe = rpes.reduce(0){|sum, r| sum + r}
+                    avg_rpe = total_rpe / rpes.size
+                    final_data << {name: name, RPE: avg_rpe}
+                    names << obj[:name]
                 end
             end
-            render json: formatted_chart_data
+            render json: final_data
         else
             render json: { error: "Insufficient data" }
         end

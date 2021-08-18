@@ -47,6 +47,7 @@ section {
 
 svg.recharts-surface {
     background-color: white !important;
+    border-radius: 30px;
 }
 
 div.recharts-responsive-container {

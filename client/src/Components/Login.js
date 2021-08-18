@@ -2,7 +2,7 @@ import { Form, Button } from 'react-bootstrap'
 import { useHistory } from 'react-router'
 import { useState } from 'react'
 
-function Login({ setUser, setDisplayForm }) {
+function Login({ handleUser, setDisplayForm }) {
     const [formDisplayed, setFormDisplayed] = useState(true)
     const [existingUser, setExistingUser] = useState({
         email: "",
@@ -43,7 +43,7 @@ function Login({ setUser, setDisplayForm }) {
         const data = await res.json()
         if (res.ok) {
             console.log(data)
-            setUser(data)
+            handleUser(data)
             setDisplayForm(true)
             history.push("/")
         } else {
@@ -70,7 +70,7 @@ function Login({ setUser, setDisplayForm }) {
         const data = await res.json()
         if (res.ok) {
             console.log(data)
-            setUser(data)
+            handleUser(data)
             setDisplayForm(true)
             history.push("/")
         } else {

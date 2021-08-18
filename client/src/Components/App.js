@@ -129,6 +129,10 @@ function App() {
     })
   }
 
+  function handleUser(data) {
+    setUser(data)
+  }
+
   async function logOut(e) {
     e.preventDefault()
     const res = await fetch("/logout", {
@@ -201,7 +205,7 @@ function App() {
             {user ? <EditProfileForm user={user} handleUserUpdate={handleUserUpdate} handleUserDelete={handleUserDelete} errors={errors}/> : <Login />}
           </Route>
           <Route exact path="/login">
-            <Login setUser={setUser} setDisplayForm={setDisplayForm} />
+            <Login handleUser={handleUser} setDisplayForm={setDisplayForm} />
           </Route>
         </Switch>
       </div>

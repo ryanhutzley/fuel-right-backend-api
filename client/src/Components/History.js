@@ -15,7 +15,7 @@ function History({ setDisplayForm, user, schedules, favFood, avgSleepDuration, b
 
     console.log(schedules)
     console.log(favFood)
-    console.log(bestPerformanceFood)
+    console.log(chartOneData)
 
     let name = "User"
     if (user) {
@@ -47,7 +47,7 @@ function History({ setDisplayForm, user, schedules, favFood, avgSleepDuration, b
             <br></br>
             <br></br>
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                <h2 id="pop" style={{color: 'white'}}>RPE vs. Pre-Activity Food</h2>
+                <h2 id="pop" style={{color: 'white'}}>Average RPE vs. Pre-Activity Food</h2>
                 <br></br>
                 <ResponsiveContainer width={800} height={300}>
                     <BarChart
@@ -64,16 +64,17 @@ function History({ setDisplayForm, user, schedules, favFood, avgSleepDuration, b
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="name" />
                         <YAxis />
+                        <Tooltip />
                         {/* <Bar dataKey="pv" fill="#8884d8" /> */}
                         <Bar dataKey="RPE" fill="#82ca9d" />
                     </BarChart>
                 </ResponsiveContainer>
                 <br></br>
                 <br></br>
-                <h2 id="pop" style={{color: 'white'}}>RPE vs. Sleep Duration</h2>
+                <h2 id="pop" style={{color: 'white'}}>Average RPE vs. Sleep Duration</h2>
                 <br></br>
                 <ResponsiveContainer width={800} height={300}>
-                    <LineChart
+                    <BarChart
                     width={500}
                     height={300}
                     data={chartTwoData}
@@ -85,11 +86,12 @@ function History({ setDisplayForm, user, schedules, favFood, avgSleepDuration, b
                     }}
                     >
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
+                        <XAxis dataKey="duration" />
                         <YAxis />
-                        <Line type="monotone" dataKey="RPE" stroke="#8884d8" activeDot={{ r: 8 }} />
+                        <Tooltip />
+                        <Bar dataKey="RPE" fill="#8884d8" />
                         {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" /> */}
-                    </LineChart>
+                    </BarChart>
                 </ResponsiveContainer>
             </div>
             <br></br>

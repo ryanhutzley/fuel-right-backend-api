@@ -119,9 +119,22 @@ class SchedulesController < ApplicationController
                 hours = minutes / 60.floor
                 added_mins = minutes % 60
                 final_duration = "#{hours}h #{added_mins}m"
-                formatted_chart_data << {name: final_duration, RPE: best_perceived_effort[:perceived_effort]}
+                formatted_chart_data << {duration: final_duration, RPE: best_perceived_effort[:perceived_effort]}
             end
-            render json: formatted_chart_data
+            final_data = []
+            durations = []
+            formatted_chart_data.each do |obj|
+                duplicates = formatted_chart_data.select{|o| o[:duration] == obj[:duration]}
+                if !durations.include?(obj[:duration])
+                    duration = duplicates[0][:duration]
+                    rpes = duplicates.map{|d| d[:RPE].to_f}
+                    total_rpe = rpes.reduce(0){|sum, r| sum + r}
+                    avg_rpe = total_rpe / rpes.size
+                    final_data << {duration: duration, RPE: avg_rpe}
+                    durations << obj[:duration]
+                end
+            end
+            render json: final_data
         else
             render json: { error: "Insufficient data" }
         end
