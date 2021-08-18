@@ -1,20 +1,18 @@
 import { useEffect, useState } from 'react';
 import { LineChart, Line, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-function History({ setDisplayForm, user, schedules, favFood }) {
+function History({ setDisplayForm, user, schedules, favFood, avgSleepDuration, bestPerformanceFood, optimalSleepDuration }) {
 
     setDisplayForm(true)
-
-    
 
     let activitiesTotal = 0
     schedules.forEach(schedule => {
         activitiesTotal += schedule.activities.length
     })
 
-
     console.log(schedules)
     console.log(favFood)
+    console.log(avgSleepDuration)
 
     let name = user.name.charAt(0).toUpperCase() + user.name.slice(1)
 
@@ -124,10 +122,10 @@ function History({ setDisplayForm, user, schedules, favFood }) {
                 </div>
                 <div>
                     <h2>{activitiesTotal}</h2>
-                    <h2>Hi</h2>
-                    <h2>{favFood ? favFood.name : null}</h2>
-                    <h2>Hi</h2>
-                    <h2>Hi</h2>
+                    <h2>{avgSleepDuration ? `${avgSleepDuration.hours}h ${avgSleepDuration.mins}m` : '0h'}</h2>
+                    <h2>{favFood ? favFood.name : 'Candy'}</h2>
+                    <h2>{bestPerformanceFood ? bestPerformanceFood.name : 'Candy'}</h2>
+                    <h2>{optimalSleepDuration ? `${optimalSleepDuration.duration}` : '0h'}</h2>
                 </div>
             </div>
             <br></br>

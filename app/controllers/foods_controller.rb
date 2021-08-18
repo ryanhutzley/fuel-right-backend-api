@@ -28,6 +28,33 @@ class FoodsController < ApplicationController
         render json: fav_food
     end
 
+    def performance_food
+        user = User.find_by(id: session[:user_id])
+        schedules = Schedule.where(user_id: user.id)
+        preactivity_foods = []
+        schedules.each do |schedule|
+            if schedule.foods && schedule.activities
+                schedule.activities.each do |activity|
+                    time = activity[:time]
+                    foods = schedule.foods.where("time < ?", time)
+                    foods.each do |f|
+                        if !preactivity_foods.include?(f)
+                            preactivity_foods << f
+                        end
+                    end
+                end
+            end
+        end
+        best_food = preactivity_foods.max_by do |food|
+            schedule = Schedule.find_by(id: food[:schedule_id])
+            best_perceived_effort = schedule.activities.max_by do |activity|
+                activity[:perceived_effort]
+            end
+            best_perceived_effort
+        end
+        render json: best_food
+    end
+
     private
 
     def food_params

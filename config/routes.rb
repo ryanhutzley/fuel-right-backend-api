@@ -4,11 +4,13 @@ Rails.application.routes.draw do
   resources :bedtimes, only: [:create]
   resources :wakeups, only: [:create]
   resources :schedules, only: [:index, :show]
-  resources :users, except: [:create]
+  resources :users, except: [:create, :index]
 
   # get "/schedule_today", to: "schedules#today"
   get "/sleep_durations", to: "schedules#sleep_durations"
   get "/favorite_food", to: "foods#favorite_food"
+  get "/performance_food", to: "foods#performance_food"
+  get "/optimal_sleep_duration", to: "schedules#optimal_sleep_duration"
 
   post "/signup", to: "users#create"
   get "/me", to: "users#show" 

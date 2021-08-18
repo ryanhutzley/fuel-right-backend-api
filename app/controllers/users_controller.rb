@@ -19,6 +19,22 @@ class UsersController < ApplicationController
         end
     end
 
+    def update
+        user = User.find_by(id: session[:user_id])
+        user.update(user_params)
+        if user.valid?
+            render json: user
+        else
+            render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
+        end
+    end
+
+    def destroy
+        user = User.find_by(id: session[:user_id])
+        user.destroy
+        head :no_content
+    end
+
     private
 
     def user_params

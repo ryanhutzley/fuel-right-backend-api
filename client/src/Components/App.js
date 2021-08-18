@@ -19,6 +19,10 @@ function App() {
   const [index, setIndex] = useState(0)
   const [displayedSchedule, setDisplayedSchedule] = useState(null)
   const [favFood, setFavFood] = useState(null)
+  const [errors, setErrors] = useState([])
+  const [avgSleepDuration, setAverageSleepDuration] = useState(null)
+  const [bestPerformanceFood, setBestPerformanceFood] = useState(null)
+  const [optimalSleepDuration, setOptimalSleepDuration] = useState(null)
   
   const history = useHistory()
 
@@ -62,7 +66,29 @@ function App() {
 
   function getSleepDurations() {
     fetch('/sleep_durations')
-    .then(console.log)
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+      setAverageSleepDuration(data)
+      getBestPerformanceFood()
+    })
+  }
+
+  function getBestPerformanceFood() {
+    fetch('/performance_food')
+    .then(res => res.json())
+    .then(data => {
+      setBestPerformanceFood(data)
+      getOptimalSleepDuration()
+    })
+  }
+
+  function getOptimalSleepDuration() {
+    fetch('/optimal_sleep_duration')
+    .then(res => res.json())
+    .then(data => {
+      setOptimalSleepDuration(data)
+    })
   }
 
   async function logOut(e) {
@@ -74,6 +100,29 @@ function App() {
       setUser(null)
       history.push("/login")
     }
+  }
+
+  async function handleUserUpdate(updatedUser) {
+    const res = await fetch(`/users/${user.id}`, {
+      method: "PATCH",
+      headers: {"Content-type": "application/json"},
+      body: JSON.stringify(updatedUser)
+    })
+    const data = await res.json()
+    if (res.ok) {
+      setUser(data)
+      history.push("/")
+    } else {
+      setErrors(data.errors)
+    }
+  }
+
+  function handleUserDelete(e) {
+    e.preventDefault()
+    fetch(`/users/${user.id}`, {
+      method: "DELETE",
+    })
+    .then(() => logOut())
   }
 
   async function addEntry(action, payload) {
@@ -94,6 +143,7 @@ function App() {
   }
 
   console.log(user)
+  console.log(avgSleepDuration)
 
   return (
     <div className="App">
@@ -107,10 +157,10 @@ function App() {
             {user ? <DailyLog schedules={schedules} index={index} setIndex={setIndex} getSingleSchedule={getSingleSchedule} displayedSchedule={displayedSchedule} setDisplayForm={setDisplayForm}/> : <Login />}
           </Route>
           <Route exact path="/history">
-            {user ? <History setDisplayForm={setDisplayForm} user={user} schedules={schedules} favFood={favFood} /> : <Login />}
+            {user ? <History setDisplayForm={setDisplayForm} user={user} schedules={schedules} favFood={favFood} avgSleepDuration={avgSleepDuration} bestPerformanceFood={bestPerformanceFood} optimalSleepDuration={optimalSleepDuration} /> : <Login />}
           </Route>
           <Route exact path="/edit">
-            {user ? <EditProfileForm user={user} /> : <Login />}
+            {user ? <EditProfileForm user={user} handleUserUpdate={handleUserUpdate} handleUserDelete={handleUserDelete} errors={errors}/> : <Login />}
           </Route>
           <Route exact path="/login">
             <Login setUser={setUser} setDisplayForm={setDisplayForm} />
