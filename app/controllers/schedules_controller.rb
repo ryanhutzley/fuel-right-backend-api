@@ -47,12 +47,16 @@ class SchedulesController < ApplicationController
                 end
             end
         end
-        avg_seconds = durations.sum / durations.size
-        avg_minutes = avg_seconds / 60
-        hours = avg_minutes / 60.floor
-        mins = avg_minutes % 60
-        avg_duration = {hours: hours, mins: mins}
-        render json: avg_duration
+        if durations.length != 0
+            avg_seconds = durations.sum / durations.size
+            avg_minutes = avg_seconds / 60
+            hours = avg_minutes / 60.floor
+            mins = avg_minutes % 60
+            avg_duration = {hours: hours, mins: mins}
+            render json: avg_duration
+        else
+            render json: {error: "Insufficient data"}
+        end
     end
 
     def optimal_sleep_duration
@@ -81,9 +85,10 @@ class SchedulesController < ApplicationController
             minutes = best_sleep_duration / 60
             hours = minutes / 60.floor
             added_mins = minutes % 60
-            render json: {duration: {hours: hours, added_mins: added_mins}}
+            optimal_duration = {hours: hours, added_mins: added_mins}
+            render json: optimal_duration
         else
-            render json: {duration: "Insufficient data"}
+            render json: { error: "Insufficient data"}
         end
     end
 
@@ -118,7 +123,7 @@ class SchedulesController < ApplicationController
             end
             render json: formatted_chart_data
         else
-            render json: nil
+            render json: { error: "Insufficient data" }
         end
     end
 

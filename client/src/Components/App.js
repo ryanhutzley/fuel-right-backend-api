@@ -61,6 +61,9 @@ function App() {
     fetch('/favorite_food')
     .then(res => res.json())
     .then(data => {
+      if (data.error) {
+        getSleepDurations()
+      }
       setFavFood(data)
       getSleepDurations()
     })
@@ -71,6 +74,9 @@ function App() {
     .then(res => res.json())
     .then(data => {
       console.log(data)
+      if (data.error) {
+        getBestPerformanceFood()
+      }
       setAverageSleepDuration(data)
       getBestPerformanceFood()
     })
@@ -80,6 +86,9 @@ function App() {
     fetch('/performance_food')
     .then(res => res.json())
     .then(data => {
+      if (data.error) {
+        getOptimalSleepDuration()
+      }
       setBestPerformanceFood(data)
       getOptimalSleepDuration()
     })
@@ -89,6 +98,9 @@ function App() {
     fetch('/optimal_sleep_duration')
     .then(res => res.json())
     .then(data => {
+      if (data.error) {
+        getChartOneData()
+      }
       setOptimalSleepDuration(data)
       getChartOneData()
     })
@@ -98,6 +110,9 @@ function App() {
     fetch('/chart_one_data')
     .then(res => res.json())
     .then(data => {
+      if (data.error) {
+        getChartTwoData()
+      }
       setChartOneData(data)
       getChartTwoData()
     })
@@ -107,6 +122,9 @@ function App() {
     fetch('/chart_two_data')
     .then(res => res.json())
     .then(data => {
+      if (data.error) {
+        setChartTwoData(null)
+      }
       setChartTwoData(data)
     })
   }

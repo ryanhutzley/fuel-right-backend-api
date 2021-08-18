@@ -6,15 +6,21 @@ function History({ setDisplayForm, user, schedules, favFood, avgSleepDuration, b
     setDisplayForm(true)
 
     let activitiesTotal = 0
-    schedules.forEach(schedule => {
-        activitiesTotal += schedule.activities.length
-    })
+
+    if (schedules) {
+        schedules.forEach(schedule => {
+            activitiesTotal += schedule.activities.length
+        })
+    }
 
     console.log(schedules)
     console.log(favFood)
     console.log(avgSleepDuration)
 
-    let name = user.name.charAt(0).toUpperCase() + user.name.slice(1)
+    let name = "User"
+    if (user) {
+        name = user.name.charAt(0).toUpperCase() + user.name.slice(1)
+    }
 
     return (
         <div style={{minHeight: '100vh'}}>
@@ -35,7 +41,7 @@ function History({ setDisplayForm, user, schedules, favFood, avgSleepDuration, b
                     <h2>{avgSleepDuration ? `${avgSleepDuration.hours}h ${avgSleepDuration.mins}m` : '0h'}</h2>
                     <h2>{favFood ? favFood.name : 'Candy'}</h2>
                     <h2>{bestPerformanceFood ? bestPerformanceFood.name : 'Candy'}</h2>
-                    <h2>{optimalSleepDuration ? `${optimalSleepDuration.duration.hours}h ${optimalSleepDuration.duration.added_mins}m` : '0h'}</h2>
+                    <h2>{optimalSleepDuration ? `${optimalSleepDuration.hours}h ${optimalSleepDuration.added_mins}m` : '0h'}</h2>
                 </div>
             </div>
             <br></br>

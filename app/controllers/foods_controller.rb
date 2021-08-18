@@ -19,13 +19,17 @@ class FoodsController < ApplicationController
         schedules.each do |s|
             foods.concat(s.foods)
         end
-        food_names = foods.map{|f| f.name}
-        fav_food = foods.max_by do |f|
-            matches = food_names.select{|name| f.name == name}
-            matches.count
+        if foods.length != 0
+            food_names = foods.map{|f| f.name}
+            fav_food = foods.max_by do |f|
+                matches = food_names.select{|name| f.name == name}
+                matches.count
+            end
+            # byebug
+            render json: fav_food
+        else
+            render json: { error: "Insufficient data" }
         end
-        # byebug
-        render json: fav_food
     end
 
     def performance_food
@@ -45,14 +49,18 @@ class FoodsController < ApplicationController
                 end
             end
         end
-        best_food = preactivity_foods.max_by do |food|
-            schedule = Schedule.find_by(id: food[:schedule_id])
-            best_perceived_effort = schedule.activities.max_by do |activity|
-                activity[:perceived_effort]
+        if preactivity_foods.length != 0
+            best_food = preactivity_foods.max_by do |food|
+                schedule = Schedule.find_by(id: food[:schedule_id])
+                best_perceived_effort = schedule.activities.max_by do |activity|
+                    activity[:perceived_effort]
+                end
+                best_perceived_effort
             end
-            best_perceived_effort
+            render json: best_food
+        else
+            render json: { error: "Insufficient data" }
         end
-        render json: best_food
     end
 
     def chart_one_data
@@ -72,15 +80,19 @@ class FoodsController < ApplicationController
                 end
             end
         end
-        formatted_chart_data = []
-        preactivity_foods.each do |food|
-            schedule = Schedule.find_by(id: food[:schedule_id])
-            best_perceived_effort = schedule.activities.max_by do |activity|
-                activity[:perceived_effort]
+        if preactivity_foods.length != 0
+            formatted_chart_data = []
+            preactivity_foods.each do |food|
+                schedule = Schedule.find_by(id: food[:schedule_id])
+                best_perceived_effort = schedule.activities.max_by do |activity|
+                    activity[:perceived_effort]
+                end
+                formatted_chart_data << {name: food.name, RPE: best_perceived_effort[:perceived_effort]}
             end
-            formatted_chart_data << {name: food.name, RPE: best_perceived_effort[:perceived_effort]}
+            render json: formatted_chart_data
+        else
+            render json: { error: "Insufficient data" }
         end
-        render json: formatted_chart_data
     end
 
     private
