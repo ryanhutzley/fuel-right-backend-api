@@ -8,6 +8,7 @@ function DailyLog({ schedules, index, setIndex, getSingleSchedule, displayedSche
     const regex = /\d+:\d+/g
 
     function handlePrevious(e) {
+        e.target.blur()
         if (index !== 0) {
             let newIndex = index - 1
             getSingleSchedule(schedules[newIndex].id)
@@ -16,6 +17,7 @@ function DailyLog({ schedules, index, setIndex, getSingleSchedule, displayedSche
     }
 
     function handleNext(e) {
+        e.target.blur()
         if (index !== schedules.length - 1) {
             let newIndex = index + 1
             getSingleSchedule(schedules[newIndex].id)

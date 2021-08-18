@@ -1,10 +1,9 @@
 class FoodsController < ApplicationController
 
     def create
-        user = User.find_by(id: session[:user_id])
         date = Date.parse(params[:_json][0][:date])
         # byebug
-        schedule = Schedule.find_or_create_by(user_id: user.id, date: date)
+        schedule = Schedule.find_or_create_by(user_id: session[:user_id], date: date)
         food_params[:_json].each do |obj|
             time = Time.parse(obj[:time], date)
             schedule.foods.create(name: obj[:name], portion: obj[:portion], time: time)
@@ -13,8 +12,7 @@ class FoodsController < ApplicationController
     end
 
     def favorite_food
-        user = User.find_by(id: session[:user_id])
-        schedules = Schedule.where(user_id: user.id)
+        schedules = Schedule.where(user_id: session[:user_id])
         foods = []
         schedules.each do |s|
             foods.concat(s.foods)
@@ -37,8 +35,7 @@ class FoodsController < ApplicationController
     end
 
     def performance_food
-        user = User.find_by(id: session[:user_id])
-        schedules = Schedule.where(user_id: user.id)
+        schedules = Schedule.where(user_id: session[:user_id])
         preactivity_foods = []
         schedules.each do |schedule|
             if schedule.foods && schedule.activities
@@ -71,8 +68,7 @@ class FoodsController < ApplicationController
     end
 
     def chart_one_data
-        user = User.find_by(id: session[:user_id])
-        schedules = Schedule.where(user_id: user.id)
+        schedules = Schedule.where(user_id: session[:user_id])
         preactivity_foods = []
         schedules.each do |schedule|
             if schedule.foods && schedule.activities

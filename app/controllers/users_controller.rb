@@ -1,7 +1,8 @@
 class UsersController < ApplicationController
+    skip_before_action :authorize, only: :create
 
     def create
-        user = User.create(user_params)
+        user = User.create!(user_params)
         if user.valid?
             session[:user_id] = user.id
             render json: user
@@ -11,27 +12,20 @@ class UsersController < ApplicationController
     end
 
     def show
-        user = User.find_by(id: session[:user_id])
-        if user
-            render json: user, status: :created
-        else
-            render json: { error: "Not authorized" }, status: :unauthorized
-        end
+        render json: @current_user
     end
 
     def update
-        user = User.find_by(id: session[:user_id])
-        user.update(user_params)
-        if user.valid?
-            render json: user
+        @current_user.update(user_params)
+        if @current_user.valid?
+            render json: @current_user
         else
             render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
         end
     end
 
     def destroy
-        user = User.find_by(id: session[:user_id])
-        user.destroy
+        @current_user.destroy
         head :no_content
     end
 

@@ -1,9 +1,8 @@
 class SchedulesController < ApplicationController
 
     def index
-        user = User.find_by(id: session[:user_id])
         # byebug
-        schedules = Schedule.where(user_id: user.id)
+        schedules = Schedule.where(user_id: session[:user_id])
         sorted_schedules = schedules.sort{|a,b| a.date <=> b.date}
         render json: sorted_schedules.to_json(include: [:wakeup, :activities, :foods, :bedtime])
     end
@@ -33,8 +32,7 @@ class SchedulesController < ApplicationController
     end
 
     def sleep_durations
-        user = User.find_by(id: session[:user_id])
-        schedules = Schedule.where(user_id: user.id)
+        schedules = Schedule.where(user_id: session[:user_id])
         durations = []
         schedules.each do |schedule|
             if schedule.bedtime
@@ -60,8 +58,7 @@ class SchedulesController < ApplicationController
     end
 
     def optimal_sleep_duration
-        user = User.find_by(id: session[:user_id])
-        schedules = Schedule.where(user_id: user.id)
+        schedules = Schedule.where(user_id: session[:user_id])
         durations_with_schedule = []
         schedules.each do |schedule|
             if schedule.bedtime
@@ -93,8 +90,7 @@ class SchedulesController < ApplicationController
     end
 
     def chart_two_data
-        user = User.find_by(id: session[:user_id])
-        schedules = Schedule.where(user_id: user.id)
+        schedules = Schedule.where(user_id: session[:user_id])
         durations_with_schedule = []
         schedules.each do |schedule|
             if schedule.bedtime
@@ -141,20 +137,3 @@ class SchedulesController < ApplicationController
     end
 
 end
-
- # bedtimes.each do |bt|
-#     date = bt.time.to_date.next_day
-#     schedule = Schedule.find_by(date: date)
-#     byebug
-#     if schedule && schedule.wakeup
-#         durations << diff = schedule.wakeup[:time].to_i - bt[:time].to_i
-#     end
-# end
-
-# formatted_actions = sorted_actions.map do |action|
-#     # {...action, time: action.time.strftime("%k:%M")}
-#     format_time = action[:time].to_time.strftime("%k:%M")
-#     action[:time] = format_time
-#     action 
-# end
-# render json: formatted_actions

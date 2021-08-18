@@ -43,9 +43,9 @@ function Login({ handleUser, setDisplayForm }) {
         const data = await res.json()
         if (res.ok) {
             console.log(data)
-            handleUser(data)
+            handleUser(data) // <== error: this is not a function??, handleUser is an attempt to avoid passing down state setter
             setDisplayForm(true)
-            history.push("/")
+            history.push("/") // <== pushing to day instead of tracker page and I don't know why
         } else {
             console.log(data)
             setErrors(data.errors)
