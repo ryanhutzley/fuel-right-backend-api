@@ -11,7 +11,6 @@ class SchedulesController < ApplicationController
     def show
         schedule = Schedule.find_by(id: params[:id])
         combo1 = Array(schedule.wakeup).concat(schedule.activities)
-        # combo2 = combo1.concat(schedule.foods)
         actions_except_foods = Array(schedule.bedtime).concat(combo1)
         sorted_without_foods = actions_except_foods.sort{|a,b| a.time <=> b.time}
         food_array = Array(schedule.foods)
@@ -31,6 +30,31 @@ class SchedulesController < ApplicationController
         frontend_array << sorted_actions
         # byebug
         render json: frontend_array
+    end
+
+    def sleep_durations
+        user = User.find_by(id: session[:user_id])
+        schedules = Schedule.where(user_id: user.id)
+        durations = []
+        schedules.each do |schedule|
+            date = schedule.bedtime['time'].to_date.next_day
+            new_schedule = Schedule.find_by(date: date)
+            if new_schedule && new_schedule.wakeup
+                diff = new_schedule.wakeup[:time].to_i - schedule.bedtime[:time].to_i
+                byebug
+                durations << diff
+            end
+        end
+        
+        # bedtimes.each do |bt|
+        #     date = bt.time.to_date.next_day
+        #     schedule = Schedule.find_by(date: date)
+        #     byebug
+        #     if schedule && schedule.wakeup
+        #         durations << diff = schedule.wakeup[:time].to_i - bt[:time].to_i
+        #     end
+        # end
+        
     end
 
 end

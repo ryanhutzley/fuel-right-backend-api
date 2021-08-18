@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   resources :users, except: [:create]
 
   # get "/schedule_today", to: "schedules#today"
+  get "/sleep_durations", to: "schedules#sleep_durations"
+  get "/favorite_food", to: "foods#favorite_food"
 
   post "/signup", to: "users#create"
   get "/me", to: "users#show" 

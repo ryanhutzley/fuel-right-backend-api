@@ -18,6 +18,7 @@ function App() {
   const [scheduleCheck, setScheduleCheck] = useState(true)
   const [index, setIndex] = useState(0)
   const [displayedSchedule, setDisplayedSchedule] = useState(null)
+  const [favFood, setFavFood] = useState(null)
   
   const history = useHistory()
 
@@ -44,7 +45,24 @@ function App() {
   function getSingleSchedule(id) {
     fetch(`schedules/${id}`)
     .then(res => res.json())
-    .then(data => setDisplayedSchedule(data))
+    .then(data => {
+      setDisplayedSchedule(data)
+      getFavFood()
+    })
+  }
+
+  function getFavFood() {
+    fetch('/favorite_food')
+    .then(res => res.json())
+    .then(data => {
+      setFavFood(data)
+      getSleepDurations()
+    })
+  }
+
+  function getSleepDurations() {
+    fetch('/sleep_durations')
+    .then(console.log)
   }
 
   async function logOut(e) {
@@ -89,7 +107,7 @@ function App() {
             {user ? <DailyLog schedules={schedules} index={index} setIndex={setIndex} getSingleSchedule={getSingleSchedule} displayedSchedule={displayedSchedule} setDisplayForm={setDisplayForm}/> : <Login />}
           </Route>
           <Route exact path="/history">
-            {user ? <History setDisplayForm={setDisplayForm} user={user} /> : <Login />}
+            {user ? <History setDisplayForm={setDisplayForm} user={user} schedules={schedules} favFood={favFood} /> : <Login />}
           </Route>
           <Route exact path="/edit">
             {user ? <EditProfileForm user={user} /> : <Login />}

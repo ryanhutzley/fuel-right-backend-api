@@ -17,3 +17,17 @@ class BedtimesController < ApplicationController
     end
 
 end
+
+# def sleep_durations
+#     user = User.find_by(id: session[:user_id])
+#     schedules = Schedule.where(user_id: user.id)
+#     bedtimes = []
+#     wakeups = []
+#     schedules.each do |schedule|
+#         bedtimes.concat(Array(schedule.bedtime))
+#         wakeups.concat(Array(schedule.wakeup))
+#     end
+#     bedtimes.each do |bedtime|
+        
+#     end
+# end 

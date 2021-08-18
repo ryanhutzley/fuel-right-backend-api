@@ -12,6 +12,22 @@ class FoodsController < ApplicationController
         render json: schedule.to_json(include: [:wakeup, :activities, :foods, :bedtime])
     end
 
+    def favorite_food
+        user = User.find_by(id: session[:user_id])
+        schedules = Schedule.where(user_id: user.id)
+        foods = []
+        schedules.each do |s|
+            foods.concat(s.foods)
+        end
+        food_names = foods.map{|f| f.name}
+        fav_food = foods.max_by do |f|
+            matches = food_names.select{|name| f.name == name}
+            matches.count
+        end
+        # byebug
+        render json: fav_food
+    end
+
     private
 
     def food_params
