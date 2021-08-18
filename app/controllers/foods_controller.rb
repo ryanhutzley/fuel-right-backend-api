@@ -53,10 +53,11 @@ class FoodsController < ApplicationController
             best_food = preactivity_foods.max_by do |food|
                 schedule = Schedule.find_by(id: food[:schedule_id])
                 post_food_activities = schedule.activities.where("time > ?", food[:time])
-                best_activity = post_food_activities.max_by do |a|
-                    a[:perceived_effort]
-                end
-                best_activity[:perceived_effort]
+                post_food_activities[0][:perceived_effort]
+                # best_activity = post_food_activities.max_by do |a|
+                #     a[:perceived_effort]
+                # end
+                # best_activity[:perceived_effort]
             end
             render json: best_food
         else
@@ -86,10 +87,18 @@ class FoodsController < ApplicationController
             preactivity_foods.each do |food|
                 schedule = Schedule.find_by(id: food[:schedule_id])
                 post_food_activities = schedule.activities.where("time > ?", food[:time])
-                best_activity = post_food_activities.max_by do |a|
-                    a[:perceived_effort]
+                rpe = post_food_activities[0][:perceived_effort]
+                # best_activity = post_food_activities.max_by do |a|
+                #     a[:perceived_effort]
+                # end
+                formatted_chart_data << {name: food.name, RPE: rpe}
+            end
+            formatted_chart_data.each do |obj|
+                duplicates = formatted_chart_data.select{|o| o[:name] == obj[:name]}
+                obj_with_best_effort = duplicates.max_by{|d| d[:RPE]}
+                if obj_with_best_effort != obj
+                    formatted_chart_data.delete(obj)
                 end
-                formatted_chart_data << {name: food.name, RPE: best_activity[:perceived_effort]}
             end
             render json: formatted_chart_data
         else

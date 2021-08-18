@@ -15,7 +15,7 @@ function History({ setDisplayForm, user, schedules, favFood, avgSleepDuration, b
 
     console.log(schedules)
     console.log(favFood)
-    console.log(avgSleepDuration)
+    console.log(bestPerformanceFood)
 
     let name = "User"
     if (user) {
