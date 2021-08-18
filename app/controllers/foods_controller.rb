@@ -52,10 +52,11 @@ class FoodsController < ApplicationController
         if preactivity_foods.length != 0
             best_food = preactivity_foods.max_by do |food|
                 schedule = Schedule.find_by(id: food[:schedule_id])
-                best_perceived_effort = schedule.activities.max_by do |activity|
-                    activity[:perceived_effort]
+                post_food_activities = schedule.activities.where("time > ?", food[:time])
+                best_activity = post_food_activities.max_by do |a|
+                    a[:perceived_effort]
                 end
-                best_perceived_effort
+                best_activity[:perceived_effort]
             end
             render json: best_food
         else
@@ -84,10 +85,11 @@ class FoodsController < ApplicationController
             formatted_chart_data = []
             preactivity_foods.each do |food|
                 schedule = Schedule.find_by(id: food[:schedule_id])
-                best_perceived_effort = schedule.activities.max_by do |activity|
-                    activity[:perceived_effort]
+                post_food_activities = schedule.activities.where("time > ?", food[:time])
+                best_activity = post_food_activities.max_by do |a|
+                    a[:perceived_effort]
                 end
-                formatted_chart_data << {name: food.name, RPE: best_perceived_effort[:perceived_effort]}
+                formatted_chart_data << {name: food.name, RPE: best_activity[:perceived_effort]}
             end
             render json: formatted_chart_data
         else

@@ -39,8 +39,8 @@ function History({ setDisplayForm, user, schedules, favFood, avgSleepDuration, b
                 <div>
                     <h2>{activitiesTotal}</h2>
                     <h2>{avgSleepDuration ? `${avgSleepDuration.hours}h ${avgSleepDuration.mins}m` : '0h'}</h2>
-                    <h2>{favFood ? favFood.name : 'Candy'}</h2>
-                    <h2>{bestPerformanceFood ? bestPerformanceFood.name : 'Candy'}</h2>
+                    <h2>{favFood ? favFood.name : 'None'}</h2>
+                    <h2>{bestPerformanceFood ? bestPerformanceFood.name : 'None'}</h2>
                     <h2>{optimalSleepDuration ? `${optimalSleepDuration.hours}h ${optimalSleepDuration.added_mins}m` : '0h'}</h2>
                 </div>
             </div>
