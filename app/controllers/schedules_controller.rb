@@ -78,9 +78,47 @@ class SchedulesController < ApplicationController
                 best_effort
             end
             best_sleep_duration = obj_with_best_effort[:duration]
-            render json: {duration: best_sleep_duration}
+            minutes = best_sleep_duration / 60
+            hours = minutes / 60.floor
+            added_mins = minutes % 60
+            render json: {duration: {hours: hours, added_mins: added_mins}}
         else
             render json: {duration: "Insufficient data"}
+        end
+    end
+
+    def chart_two_data
+        user = User.find_by(id: session[:user_id])
+        schedules = Schedule.where(user_id: user.id)
+        durations_with_schedule = []
+        schedules.each do |schedule|
+            if schedule.bedtime
+                date = schedule.bedtime['time'].to_date.next_day
+                new_schedule = Schedule.find_by(date: date)
+                if new_schedule && new_schedule.wakeup
+                    diff = new_schedule.wakeup[:time].to_i - schedule.bedtime[:time].to_i
+                    # byebug
+                    durations_with_schedule << {duration: diff, schedule: new_schedule}
+                end
+            end
+        end
+        schedules_with_activities = durations_with_schedule.select{|obj| obj[:schedule].activities.length != 0}
+        if schedules_with_activities.length != 0
+            formatted_chart_data = []
+            schedules_with_activities.each do |obj|
+                best_perceived_effort = obj[:schedule].activities.max_by do |activity|
+                    activity[:perceived_effort]
+                end
+                duration = obj[:duration]
+                minutes = duration / 60
+                hours = minutes / 60.floor
+                added_mins = minutes % 60
+                final_duration = "#{hours}h #{added_mins}m"
+                formatted_chart_data << {name: final_duration, RPE: best_perceived_effort[:perceived_effort]}
+            end
+            render json: formatted_chart_data
+        else
+            render json: nil
         end
     end
 

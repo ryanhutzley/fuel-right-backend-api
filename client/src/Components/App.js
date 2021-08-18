@@ -23,6 +23,8 @@ function App() {
   const [avgSleepDuration, setAverageSleepDuration] = useState(null)
   const [bestPerformanceFood, setBestPerformanceFood] = useState(null)
   const [optimalSleepDuration, setOptimalSleepDuration] = useState(null)
+  const [chartOneData, setChartOneData] = useState(null)
+  const [chartTwoData, setChartTwoData] = useState(null)
   
   const history = useHistory()
 
@@ -88,6 +90,24 @@ function App() {
     .then(res => res.json())
     .then(data => {
       setOptimalSleepDuration(data)
+      getChartOneData()
+    })
+  }
+
+  function getChartOneData() {
+    fetch('/chart_one_data')
+    .then(res => res.json())
+    .then(data => {
+      setChartOneData(data)
+      getChartTwoData()
+    })
+  }
+
+  function getChartTwoData() {
+    fetch('/chart_two_data')
+    .then(res => res.json())
+    .then(data => {
+      setChartTwoData(data)
     })
   }
 
@@ -157,7 +177,7 @@ function App() {
             {user ? <DailyLog schedules={schedules} index={index} setIndex={setIndex} getSingleSchedule={getSingleSchedule} displayedSchedule={displayedSchedule} setDisplayForm={setDisplayForm}/> : <Login />}
           </Route>
           <Route exact path="/history">
-            {user ? <History setDisplayForm={setDisplayForm} user={user} schedules={schedules} favFood={favFood} avgSleepDuration={avgSleepDuration} bestPerformanceFood={bestPerformanceFood} optimalSleepDuration={optimalSleepDuration} /> : <Login />}
+            {user ? <History setDisplayForm={setDisplayForm} user={user} schedules={schedules} favFood={favFood} avgSleepDuration={avgSleepDuration} bestPerformanceFood={bestPerformanceFood} optimalSleepDuration={optimalSleepDuration} chartOneData={chartOneData} chartTwoData={chartTwoData} /> : <Login />}
           </Route>
           <Route exact path="/edit">
             {user ? <EditProfileForm user={user} handleUserUpdate={handleUserUpdate} handleUserDelete={handleUserDelete} errors={errors}/> : <Login />}

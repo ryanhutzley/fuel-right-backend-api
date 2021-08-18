@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   get "/favorite_food", to: "foods#favorite_food"
   get "/performance_food", to: "foods#performance_food"
   get "/optimal_sleep_duration", to: "schedules#optimal_sleep_duration"
+  get "/chart_one_data", to: "foods#chart_one_data"
+  get "/chart_two_data", to: "schedules#chart_two_data"
 
   post "/signup", to: "users#create"
   get "/me", to: "users#show" 

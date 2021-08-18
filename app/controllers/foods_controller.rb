@@ -55,6 +55,34 @@ class FoodsController < ApplicationController
         render json: best_food
     end
 
+    def chart_one_data
+        user = User.find_by(id: session[:user_id])
+        schedules = Schedule.where(user_id: user.id)
+        preactivity_foods = []
+        schedules.each do |schedule|
+            if schedule.foods && schedule.activities
+                schedule.activities.each do |activity|
+                    time = activity[:time]
+                    foods = schedule.foods.where("time < ?", time)
+                    foods.each do |f|
+                        if !preactivity_foods.include?(f)
+                            preactivity_foods << f
+                        end
+                    end
+                end
+            end
+        end
+        formatted_chart_data = []
+        preactivity_foods.each do |food|
+            schedule = Schedule.find_by(id: food[:schedule_id])
+            best_perceived_effort = schedule.activities.max_by do |activity|
+                activity[:perceived_effort]
+            end
+            formatted_chart_data << {name: food.name, RPE: best_perceived_effort[:perceived_effort]}
+        end
+        render json: formatted_chart_data
+    end
+
     private
 
     def food_params

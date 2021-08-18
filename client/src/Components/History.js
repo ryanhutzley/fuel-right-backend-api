@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LineChart, Line, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-function History({ setDisplayForm, user, schedules, favFood, avgSleepDuration, bestPerformanceFood, optimalSleepDuration }) {
+function History({ setDisplayForm, user, schedules, favFood, avgSleepDuration, bestPerformanceFood, optimalSleepDuration, chartOneData, chartTwoData }) {
 
     setDisplayForm(true)
 
@@ -15,96 +15,6 @@ function History({ setDisplayForm, user, schedules, favFood, avgSleepDuration, b
     console.log(avgSleepDuration)
 
     let name = user.name.charAt(0).toUpperCase() + user.name.slice(1)
-
-    const data = [
-        {
-          name: 'Page A',
-          uv: 4000,
-          pv: 2400,
-          amt: 2400,
-        },
-        {
-          name: 'Page B',
-          uv: 3000,
-          pv: 1398,
-          amt: 2210,
-        },
-        {
-          name: 'Page C',
-          uv: 2000,
-          pv: 9800,
-          amt: 2290,
-        },
-        {
-          name: 'Page D',
-          uv: 2780,
-          pv: 3908,
-          amt: 2000,
-        },
-        {
-          name: 'Page E',
-          uv: 1890,
-          pv: 4800,
-          amt: 2181,
-        },
-        {
-          name: 'Page F',
-          uv: 2390,
-          pv: 3800,
-          amt: 2500,
-        },
-        {
-          name: 'Page G',
-          uv: 3490,
-          pv: 4300,
-          amt: 2100,
-        },
-      ];
-
-      const dataLine = [
-        {
-          name: 'Page A',
-          uv: 4000,
-          pv: 2400,
-          amt: 2400,
-        },
-        {
-          name: 'Page B',
-          uv: 3000,
-          pv: 1398,
-          amt: 2210,
-        },
-        {
-          name: 'Page C',
-          uv: 2000,
-          pv: 9800,
-          amt: 2290,
-        },
-        {
-          name: 'Page D',
-          uv: 2780,
-          pv: 3908,
-          amt: 2000,
-        },
-        {
-          name: 'Page E',
-          uv: 1890,
-          pv: 4800,
-          amt: 2181,
-        },
-        {
-          name: 'Page F',
-          uv: 2390,
-          pv: 3800,
-          amt: 2500,
-        },
-        {
-          name: 'Page G',
-          uv: 3490,
-          pv: 4300,
-          amt: 2100,
-        },
-      ];
 
     return (
         <div style={{minHeight: '100vh'}}>
@@ -125,7 +35,7 @@ function History({ setDisplayForm, user, schedules, favFood, avgSleepDuration, b
                     <h2>{avgSleepDuration ? `${avgSleepDuration.hours}h ${avgSleepDuration.mins}m` : '0h'}</h2>
                     <h2>{favFood ? favFood.name : 'Candy'}</h2>
                     <h2>{bestPerformanceFood ? bestPerformanceFood.name : 'Candy'}</h2>
-                    <h2>{optimalSleepDuration ? `${optimalSleepDuration.duration}` : '0h'}</h2>
+                    <h2>{optimalSleepDuration ? `${optimalSleepDuration.duration.hours}h ${optimalSleepDuration.duration.added_mins}m` : '0h'}</h2>
                 </div>
             </div>
             <br></br>
@@ -137,7 +47,7 @@ function History({ setDisplayForm, user, schedules, favFood, avgSleepDuration, b
                     <BarChart
                     width={500}
                     height={300}
-                    data={data}
+                    data={chartOneData}
                     margin={{
                         top: 5,
                         right: 30,
@@ -148,9 +58,8 @@ function History({ setDisplayForm, user, schedules, favFood, avgSleepDuration, b
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="name" />
                         <YAxis />
-                        <Tooltip />
-                        <Bar dataKey="pv" fill="#8884d8" />
-                        <Bar dataKey="uv" fill="#82ca9d" />
+                        {/* <Bar dataKey="pv" fill="#8884d8" /> */}
+                        <Bar dataKey="RPE" fill="#82ca9d" />
                     </BarChart>
                 </ResponsiveContainer>
                 <br></br>
@@ -161,7 +70,7 @@ function History({ setDisplayForm, user, schedules, favFood, avgSleepDuration, b
                     <LineChart
                     width={500}
                     height={300}
-                    data={dataLine}
+                    data={chartTwoData}
                     margin={{
                         top: 5,
                         right: 30,
@@ -172,9 +81,8 @@ function History({ setDisplayForm, user, schedules, favFood, avgSleepDuration, b
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="name" />
                         <YAxis />
-                        <Tooltip />
-                        <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-                        <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+                        <Line type="monotone" dataKey="RPE" stroke="#8884d8" activeDot={{ r: 8 }} />
+                        {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" /> */}
                     </LineChart>
                 </ResponsiveContainer>
             </div>
