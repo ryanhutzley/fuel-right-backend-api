@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { Form, Button } from 'react-bootstrap'
+import { Form, Button, Modal } from 'react-bootstrap'
 
 function EditProfileForm({ user, handleUserUpdate, handleUserDelete, errors }) {
+    const [show, setShow] = useState(false)
     const [profileData, setProfileData] = useState({
         name: user.name,
         email: user.email,
@@ -11,6 +12,19 @@ function EditProfileForm({ user, handleUserUpdate, handleUserDelete, errors }) {
     function handleSubmit(e) {
         e.preventDefault()
         handleUserUpdate(profileData)
+    }
+
+    function handleClose() {
+        setShow(false)
+    }
+
+    function handleShow() {
+        setShow(true)
+    }
+
+    function handleDeleteConfirmation() {
+        handleUserDelete()
+        setShow(false)
     }
 
 
@@ -45,9 +59,29 @@ function EditProfileForm({ user, handleUserUpdate, handleUserDelete, errors }) {
                                                 <Button variant="primary" type="submit" style={{marginRight: '10px'}}>
                                                     Update Account
                                                 </Button>
-                                                <Button variant="danger" type="button" onClick={() => handleUserDelete()}>
+                                                <Button variant="danger" type="button" onClick={handleShow}>
                                                     Delete Account
                                                 </Button>
+                                                <Modal 
+                                                    show={show}
+                                                    onHide={handleClose}
+                                                    backdrop="static"
+                                                    keyboard={false}
+                                                    centered
+                                                >
+                                                    <Modal.Header>
+                                                        <Modal.Title>You're about to delete your FuelRight profile...</Modal.Title>
+                                                    </Modal.Header>
+                                                    <Modal.Body>All of your data will be lost - schedules, activities, foods, etc. Are you sure you want to delete?</Modal.Body>
+                                                    <Modal.Footer>
+                                                        <Button variant="secondary" onClick={handleClose}>
+                                                            No, take me back!
+                                                        </Button>
+                                                        <Button variant="danger" onClick={handleDeleteConfirmation}>
+                                                            Yes, delete my profile :(
+                                                        </Button>
+                                                    </Modal.Footer>
+                                                </Modal> 
                                             </div>
                                             <br></br>
                                             <br></br>
