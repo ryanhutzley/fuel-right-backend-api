@@ -13,6 +13,7 @@ class SessionsController < ApplicationController
 
     def destroy
         session.delete(:user_id)
+        puts "cookie content = #{session[:user_id]}"
         head :no_content
     end
     

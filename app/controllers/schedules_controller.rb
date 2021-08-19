@@ -53,7 +53,7 @@ class SchedulesController < ApplicationController
             avg_duration = {hours: hours, mins: mins}
             render json: avg_duration
         else
-            render json: {error: "Insufficient data"}
+            render json: {hours: 0, mins: 0}
         end
     end
 
@@ -85,7 +85,7 @@ class SchedulesController < ApplicationController
             optimal_duration = {hours: hours, added_mins: added_mins}
             render json: optimal_duration
         else
-            render json: { error: "Insufficient data"}
+            render json: { hours: 0, added_mins: 0 }
         end
     end
 
@@ -122,11 +122,10 @@ class SchedulesController < ApplicationController
             formatted_chart_data.each do |obj|
                 duplicates = formatted_chart_data.select{|o| o[:duration] == obj[:duration]}
                 if !durations.include?(obj[:duration])
-                    duration = duplicates[0][:duration]
                     rpes = duplicates.map{|d| d[:RPE].to_f}
                     total_rpe = rpes.reduce(0){|sum, r| sum + r}
                     avg_rpe = total_rpe / rpes.size
-                    final_data << {duration: duration, RPE: avg_rpe}
+                    final_data << {duration: obj[:duration], RPE: avg_rpe}
                     durations << obj[:duration]
                 end
             end

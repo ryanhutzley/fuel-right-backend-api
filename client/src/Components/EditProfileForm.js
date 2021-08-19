@@ -25,7 +25,7 @@ function EditProfileForm({ user, handleUserUpdate, handleUserDelete, errors }) {
                             <div className="col-12 col-lg-9 col-xl-7">
                                 <div className="card shadow-2-strong card-registration" style={{borderRadius: "15px"}}>
                                     <div className="card-body p-4 p-md-5">
-                                        <h3 className="mb-4 pb-2 pb-md-0 mb-md-3">FuelRight Signup</h3>
+                                        <h3 className="mb-4 pb-2 pb-md-0 mb-md-3">Edit FuelRight Profile</h3>
                                         <Form onSubmit={handleSubmit}>
                                             <Form.Group className="mb-3" controlId="formBasicName">
                                                 <Form.Label>Name</Form.Label>

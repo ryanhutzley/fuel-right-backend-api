@@ -2,7 +2,7 @@ import { Form, Button } from 'react-bootstrap'
 import { useHistory } from 'react-router'
 import { useState } from 'react'
 
-function Login({ handleUser, setDisplayForm }) {
+function Login({ onLogin, setDisplayForm }) {
     const [formDisplayed, setFormDisplayed] = useState(true)
     const [existingUser, setExistingUser] = useState({
         email: "",
@@ -14,10 +14,13 @@ function Login({ handleUser, setDisplayForm }) {
         email: "",
         password: "",
         password_confirmation: "",
-        weight: null
+        weight: ""
     })
 
     const history = useHistory()
+
+    // console.log(history)
+    console.log(onLogin)
 
     function handleClick() {
         setFormDisplayed(!formDisplayed)
@@ -42,12 +45,10 @@ function Login({ handleUser, setDisplayForm }) {
         })
         const data = await res.json()
         if (res.ok) {
-            console.log(data)
-            handleUser(data) // <== error: this is not a function??, handleUser is an attempt to avoid passing down state setter
+            onLogin(data) // <== error: this is not a function??, handleUser is an attempt to avoid passing down state setter
             setDisplayForm(true)
             history.push("/") // <== pushing to day instead of tracker page and I don't know why
         } else {
-            console.log(data)
             setErrors(data.errors)
             setFormData({
                 name: "",
@@ -69,19 +70,17 @@ function Login({ handleUser, setDisplayForm }) {
         })
         const data = await res.json()
         if (res.ok) {
-            console.log(data)
-            handleUser(data)
+            onLogin(data)
             setDisplayForm(true)
             history.push("/")
         } else {
-            console.log(data)
             setErrors(data.errors)
             setExistingUser({ email: "", password: "" })
         }
     }
 
-    console.log(formData)
-    console.log(existingUser)
+    // console.log(formData)
+    // console.log(existingUser)
 
     return (
         <div>

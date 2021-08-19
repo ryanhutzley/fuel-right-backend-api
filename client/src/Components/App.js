@@ -33,20 +33,29 @@ function App() {
       if (response.ok) {
         response.json().then((user) => {
           setUser(user)
-          fetch('/schedules')
-          .then(res => res.json())
-          .then(data => {
-            if (data.length !== 0) {
-              setSchedules(data)
-              setIndex(data.length - 1)
-              getSingleSchedule(data[data.length - 1].id)
-              console.log(data)
-            }
-          })
+          getSchedules()
         });
       }
     });
   }, [scheduleCheck]);
+
+  function onLogin(data) {
+    setUser(data)
+    getSchedules()
+  }
+
+  function getSchedules() {
+    fetch('/schedules')
+    .then(res => res.json())
+    .then(data => {
+      if (data.length !== 0) {
+        setSchedules(data)
+        setIndex(data.length - 1)
+        getSingleSchedule(data[data.length - 1].id)
+        console.log(data)
+      }
+    })
+  }
 
   function getSingleSchedule(id) {
     fetch(`schedules/${id}`)
@@ -129,17 +138,31 @@ function App() {
     })
   }
 
-  function handleUser(data) {
-    setUser(data)
+  function handleSchedulesScroll(id) {
+    fetch(`schedules/${id}`)
+    .then(res => res.json())
+    .then(data => {
+      setDisplayedSchedule(data)
+    })
   }
 
-  async function logOut(e) {
-    e.preventDefault()
+  async function logOut() {
     const res = await fetch("/logout", {
       method: "DELETE"
     })
     if (res.ok) {
       setUser(null)
+      setSchedules([])
+      setDisplayForm(true)
+      setIndex(0)
+      setDisplayedSchedule(null)
+      setFavFood(null)
+      setErrors([])
+      setAverageSleepDuration(null)
+      setBestPerformanceFood(null)
+      setOptimalSleepDuration(null)
+      setChartOneData(null)
+      setChartTwoData(null)
       history.push("/login")
     }
   }
@@ -159,8 +182,7 @@ function App() {
     }
   }
 
-  function handleUserDelete(e) {
-    e.preventDefault()
+  function handleUserDelete() {
     fetch(`/users/${user.id}`, {
       method: "DELETE",
     })
@@ -189,14 +211,14 @@ function App() {
 
   return (
     <div className="App">
-      <NavBar user={user} logout={logOut}/>
+      {user ? <NavBar user={user} logout={logOut}/> : null}
       <div className="bg">
         <Switch>
           <Route exact path="/">
             {user ? <TrackerForm addEntry={addEntry} displayForm={displayForm} setDisplayForm={setDisplayForm} /> : <Login />}
           </Route>
           <Route exact path="/day">
-            {user ? <DailyLog schedules={schedules} index={index} setIndex={setIndex} getSingleSchedule={getSingleSchedule} displayedSchedule={displayedSchedule} setDisplayForm={setDisplayForm}/> : <Login />}
+            {user ? <DailyLog schedules={schedules} index={index} setIndex={setIndex} handleSchedulesScroll={handleSchedulesScroll} displayedSchedule={displayedSchedule} setDisplayForm={setDisplayForm}/> : <Login />}
           </Route>
           <Route exact path="/history">
             {user ? <History setDisplayForm={setDisplayForm} user={user} schedules={schedules} favFood={favFood} avgSleepDuration={avgSleepDuration} bestPerformanceFood={bestPerformanceFood} optimalSleepDuration={optimalSleepDuration} chartOneData={chartOneData} chartTwoData={chartTwoData} /> : <Login />}
@@ -205,7 +227,7 @@ function App() {
             {user ? <EditProfileForm user={user} handleUserUpdate={handleUserUpdate} handleUserDelete={handleUserDelete} errors={errors}/> : <Login />}
           </Route>
           <Route exact path="/login">
-            <Login handleUser={handleUser} setDisplayForm={setDisplayForm} />
+            <Login onLogin={onLogin} setDisplayForm={setDisplayForm} />
           </Route>
         </Switch>
       </div>

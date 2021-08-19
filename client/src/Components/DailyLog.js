@@ -1,7 +1,7 @@
 import { Table, Button } from 'react-bootstrap'
 import { useEffect, useState } from 'react'
 
-function DailyLog({ schedules, index, setIndex, getSingleSchedule, displayedSchedule, setDisplayForm }) {
+function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayedSchedule, setDisplayForm }) {
 
     setDisplayForm(true)
     
@@ -11,7 +11,7 @@ function DailyLog({ schedules, index, setIndex, getSingleSchedule, displayedSche
         e.target.blur()
         if (index !== 0) {
             let newIndex = index - 1
-            getSingleSchedule(schedules[newIndex].id)
+            handleSchedulesScroll(schedules[newIndex].id)
             setIndex(newIndex)
         }
     }
@@ -20,7 +20,7 @@ function DailyLog({ schedules, index, setIndex, getSingleSchedule, displayedSche
         e.target.blur()
         if (index !== schedules.length - 1) {
             let newIndex = index + 1
-            getSingleSchedule(schedules[newIndex].id)
+            handleSchedulesScroll(schedules[newIndex].id)
             setIndex(newIndex)
         }
     }
