@@ -1,16 +1,16 @@
 import { Form, Button } from 'react-bootstrap'
 import { useState } from 'react'
 
-function TrackerForm({ addEntry, displayForm, setDisplayForm }) {
+function TrackerForm({ addEntry, displayForm, setDisplayForm, errors }) {
     const [action, setAction] = useState("")
     const [date, setDate] = useState("")
     const [time, setTime] = useState("")
     const [activity, setActivity] = useState({
         name: "",
-        duration: 0,
-        perceived_effort: 0
+        duration: "",
+        perceived_effort: ""
     })
-    const [foods, setFoods] = useState([{ name: "", portion: 0 }])
+    const [foods, setFoods] = useState([{ name: "", portion: "" }])
     const [selected, setSelected] = useState({ wakeup: false, food: false, activity: false, bedtime: false })
 
     function handleSubmit(e) {
@@ -32,7 +32,7 @@ function TrackerForm({ addEntry, displayForm, setDisplayForm }) {
             setSelected({...selected, food: false})
             setTime("")
             setDate("")
-            setFoods([{ name: "", portion: 0 }])
+            setFoods([{ name: "", portion: "" }])
             setAction("")
             // setDisplayForm(false)
         }
@@ -42,7 +42,7 @@ function TrackerForm({ addEntry, displayForm, setDisplayForm }) {
             setSelected({...selected, activity: false})
             setTime("")
             setDate("")
-            setActivity({ name: "", duration: 0, perceived_effort: 0 })
+            setActivity({ name: "", duration: "", perceived_effort: "" })
             setAction("")
             // setDisplayForm(false)
         } else if (selected.bedtime) {
@@ -72,26 +72,26 @@ function TrackerForm({ addEntry, displayForm, setDisplayForm }) {
         setAction(e.target.value)
         if (e.target.value === "Food") {
             setSelected({ wakeup: false, food: true, activity: false, bedtime: false })
-            setActivity({ name: "", duration: 0, perceived_effort: 0 })
+            setActivity({ name: "", duration: "", perceived_effort: "" })
         } else if (e.target.value === "Activity") {
             setSelected({ wakeup: false, food: false, activity: true, bedtime: false })
-            setFoods([{ name: "", portion: 0 }])
+            setFoods([{ name: "", portion: "" }])
         } else if (e.target.value === "Wakeup") {
             setSelected({ wakeup: true, food: false, activity: false, bedtime: false })
-            setActivity({ name: "", duration: 0, perceived_effort: 0 })
-            setFoods([{ name: "", portion: 0 }])
+            setActivity({ name: "", duration: "", perceived_effort: "" })
+            setFoods([{ name: "", portion: "" }])
             return null
         } else if (e.target.value === "Bedtime") {
             setSelected({ wakeup: false, food: false, activity: false, bedtime: true })
-            setActivity({ name: "", duration: 0, perceived_effort: 0 })
-            setFoods([{ name: "", portion: 0 }])
+            setActivity({ name: "", duration: "", perceived_effort: "" })
+            setFoods([{ name: "", portion: "" }])
             return null
         }
     }
 
     function handleAddFood(e) {
         e.target.blur()
-        setFoods([...foods, { name: "", portion: 0 }])
+        setFoods([...foods, { name: "", portion: "" }])
     }
 
     function handleRemoveFood(e) {
@@ -103,10 +103,10 @@ function TrackerForm({ addEntry, displayForm, setDisplayForm }) {
         }
     }
 
-    console.log(time, date, action, selected, activity, foods)
+    console.log(errors)
+    console.log(foods)
 
     return (
-
         <>
             {displayForm ? (
             <section className="gradient-custom" style={{minHeight: '100vh'}}>
@@ -170,12 +170,21 @@ function TrackerForm({ addEntry, displayForm, setDisplayForm }) {
                                                 <Form.Label>Rate Perceived Effort</Form.Label> 
                                                 <br></br>
                                                 <Form.Text>(How did this workout feel compared to past efforts of similar intensity/duration? scale: 1-10, 1 = way worse, 5 = the same, 10 = way better)</Form.Text>
+                                                <br></br>
+                                                <br></br>
                                                 <Form.Control required type="text" value={activity.perceived_effort} onChange={e => setActivity({...activity, perceived_effort: e.target.value})}/>
                                             </Form.Group>
                                         ) : null}
                                         <Button variant="primary" type="submit">
                                             Submit Entry
                                         </Button>
+                                        <br></br>
+                                        <br></br>
+                                        {errors !== [] ? 
+                                        (<div>
+                                            {errors.map((error, index)=> (<p style={{color: 'red', marginBottom: '0px', marginTop: '10px'}} key={index}>{error}</p>))}
+                                        </div>)
+                                        : null}
                                     </Form>
                                 </div>
                             </div>

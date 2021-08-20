@@ -53,11 +53,11 @@ function EditProfileForm({ user, handleUserUpdate, handleUserDelete, errors }) {
                                             
                                             <Form.Group className="mb-3" controlId="formBasicWeight">
                                                 <Form.Label>Weight</Form.Label>
-                                                <Form.Control required type="text" placeholder="Weight in lbs." value={profileData.weight} onChange={e => setProfileData({...profileData, weight: parseInt(e.target.value)})}/>
+                                                <Form.Control required type="text" placeholder="Weight in lbs." value={profileData.weight} onChange={e => setProfileData({...profileData, weight: e.target.value})}/>
                                             </Form.Group>
                                             <div style={{display: 'inline-flex', flexDirection: 'row', width: '50%'}}>
                                                 <Button variant="primary" type="submit" style={{marginRight: '10px'}}>
-                                                    Update Account
+                                                    Save Changes
                                                 </Button>
                                                 <Button variant="danger" type="button" onClick={handleShow}>
                                                     Delete Account

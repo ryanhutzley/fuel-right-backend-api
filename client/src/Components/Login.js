@@ -129,7 +129,7 @@ function Login({ onLogin, setDisplayForm }) {
                                             
                                             <Form.Group className="mb-3" controlId="formBasicWeight">
                                                 <Form.Label>Weight</Form.Label>
-                                                <Form.Control required type="text" placeholder="Weight in lbs." value={formData.weight} onChange={e => setFormData({...formData, weight: parseInt(e.target.value)})}/>
+                                                <Form.Control required type="text" placeholder="Weight in lbs." value={formData.weight} onChange={e => setFormData({...formData, weight: e.target.value})}/>
                                             </Form.Group>
                                             <div style={{display: 'inline-flex', flexDirection: 'row'}}>
                                                 <Button variant="primary" type="submit">

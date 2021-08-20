@@ -15,7 +15,7 @@ function App() {
   const [user, setUser] = useState(null)
   const [schedules, setSchedules] = useState([])
   const [displayForm, setDisplayForm] = useState(true)
-  const [scheduleCheck, setScheduleCheck] = useState(true)
+  // const [scheduleCheck, setScheduleCheck] = useState(true)
   const [index, setIndex] = useState(0)
   const [displayedSchedule, setDisplayedSchedule] = useState(null)
   const [favFood, setFavFood] = useState(null)
@@ -37,7 +37,7 @@ function App() {
         });
       }
     });
-  }, [scheduleCheck]);
+  }, []);
 
   function onLogin(data) {
     setUser(data)
@@ -176,6 +176,7 @@ function App() {
     const data = await res.json()
     if (res.ok) {
       setUser(data)
+      setErrors([])
       history.push("/")
     } else {
       setErrors(data.errors)
@@ -202,7 +203,10 @@ function App() {
     console.log(data)
     if (res.ok) {
       setDisplayForm(false)
-      setScheduleCheck(!scheduleCheck)
+      setErrors([])
+      getSchedules()
+    } else {
+      setErrors(data.errors)
     }
   }
 
@@ -211,17 +215,17 @@ function App() {
 
   return (
     <div className="App">
-      {user ? <NavBar user={user} logout={logOut}/> : null}
+      {user ? <NavBar user={user} logout={logOut} setDisplayForm={setDisplayForm} setErrors={setErrors} /> : null}
       <div className="bg">
         <Switch>
           <Route exact path="/">
-            {user ? <TrackerForm addEntry={addEntry} displayForm={displayForm} setDisplayForm={setDisplayForm} /> : <Login />}
+            {user ? <TrackerForm addEntry={addEntry} displayForm={displayForm} setDisplayForm={setDisplayForm} errors={errors} /> : <Login />}
           </Route>
           <Route exact path="/day">
-            {user ? <DailyLog schedules={schedules} index={index} setIndex={setIndex} handleSchedulesScroll={handleSchedulesScroll} displayedSchedule={displayedSchedule} setDisplayForm={setDisplayForm}/> : <Login />}
+            {user ? <DailyLog schedules={schedules} index={index} setIndex={setIndex} handleSchedulesScroll={handleSchedulesScroll} displayedSchedule={displayedSchedule} /> : <Login />}
           </Route>
           <Route exact path="/history">
-            {user ? <History setDisplayForm={setDisplayForm} user={user} schedules={schedules} favFood={favFood} avgSleepDuration={avgSleepDuration} bestPerformanceFood={bestPerformanceFood} optimalSleepDuration={optimalSleepDuration} chartOneData={chartOneData} chartTwoData={chartTwoData} /> : <Login />}
+            {user ? <History user={user} schedules={schedules} favFood={favFood} avgSleepDuration={avgSleepDuration} bestPerformanceFood={bestPerformanceFood} optimalSleepDuration={optimalSleepDuration} chartOneData={chartOneData} chartTwoData={chartTwoData} /> : <Login />}
           </Route>
           <Route exact path="/edit">
             {user ? <EditProfileForm user={user} handleUserUpdate={handleUserUpdate} handleUserDelete={handleUserDelete} errors={errors}/> : <Login />}

@@ -47,11 +47,16 @@ section {
 
 svg.recharts-surface {
     background-color: white !important;
-    border-radius: 30px;
+    border-radius: 20px;
+    width: 100% !important;
 }
 
 div.recharts-responsive-container {
-    margin: auto;
+    margin: 0 auto;
+}
+
+div.recharts-wrapper {
+    width: 100% !important;
 }
 
 /* .bg {

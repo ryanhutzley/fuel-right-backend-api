@@ -1,9 +1,7 @@
 import { Table, Button } from 'react-bootstrap'
 import { useEffect, useState } from 'react'
 
-function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayedSchedule, setDisplayForm }) {
-
-    setDisplayForm(true)
+function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayedSchedule }) {
     
     const regex = /\d+:\d+/g
 
@@ -31,8 +29,7 @@ function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayed
         <div style={{minHeight: '100vh'}}>
             <br></br>
             <br></br>
-            <br></br>
-            <h1 id="pop" style={{color: 'white', textAlign: 'center'}}>{displayedSchedule ? `${displayedSchedule[0].date}` : null}</h1>
+            <h1 id="pop" style={{color: 'white', display: 'table', margin: 'auto', backgroundColor: 'blue', padding: '10px', borderRadius: '10px'}}>{displayedSchedule ? `${displayedSchedule[0].date}` : "No schedules to display"}</h1>
             <br></br>
             <div style={{display: 'flex', justifyContent: 'center', width: '15%', margin: 'auto'}}>
                 {index > 0 ? <Button variant="primary" type="button" onClick={handlePrevious} style={{width: '100px'}}>Previous</Button> : null}
@@ -40,32 +37,31 @@ function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayed
             </div>
             <br></br>
             <Table striped bordered hover variant="dark" style={{width: '80%', margin: 'auto'}}>
-                <thead>
-                    <tr>
-                        <th>Time</th>
-                        <th>Action</th>
-                        <th>Type(s)</th>
-                        <th>Details</th>
-                    </tr>
-                </thead>
-                <tbody>
+                {displayedSchedule ? (
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Action</th>
+                            <th>Type(s)</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    ) : null}
+                    <tbody>
                     {displayedSchedule ? (
                         displayedSchedule[1].map((action, index) => {
                             if (action.wakeup) {
                                 return (
                                     <tr key={index}>
                                         <td>{action.time.match(regex)[0]}</td>
-                                        <td>Wakeup</td>
-                                        <td></td>
-                                        <td></td>
+                                        <td colSpan="3">Wakeup</td>
                                     </tr>
                                 )
                             } else if (action.foods) {
                                 let names = []
                                 let portions = []
                                 action.foods.forEach(food => {
-                                    let capitalized = food.name.charAt(0).toUpperCase() + food.name.slice(1)
-                                    names.push(capitalized)
+                                    names.push(food.name)
                                     portions.push(`${food.portion} oz.`)
                                 })
                                 let groupedNames = names.join(', ')
@@ -91,9 +87,7 @@ function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayed
                                 return (
                                     <tr key={index}>
                                         <td>{action.time.match(regex)[0]}</td>
-                                        <td>Bedtime</td>
-                                        <td></td>
-                                        <td></td>
+                                        <td colSpan="3">Bedtime</td>
                                     </tr>
                                 )
                             }

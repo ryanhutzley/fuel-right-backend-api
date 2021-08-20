@@ -6,7 +6,10 @@ class FoodsController < ApplicationController
         schedule = Schedule.find_or_create_by(user_id: session[:user_id], date: date)
         food_params[:_json].each do |obj|
             time = Time.parse(obj[:time], date)
-            schedule.foods.create(name: obj[:name], portion: obj[:portion], time: time)
+            food = schedule.foods.create(name: obj[:name].titleize, portion: obj[:portion], time: time)
+            if !food.valid?
+                return render json: { errors: food.errors.full_messages }, status: :unprocessable_entity
+            end
         end
         render json: schedule.to_json(include: [:wakeup, :activities, :foods, :bedtime])
     end
