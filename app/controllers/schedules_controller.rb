@@ -7,13 +7,46 @@ class SchedulesController < ApplicationController
         render json: sorted_schedules.to_json(include: [:wakeup, :activities, :foods, :bedtime])
     end
 
+    #################################################################################################
+
     def show
         schedule = Schedule.find_by(id: params[:id])
+        sleep_duration = {hours: 0, added_mins: 0}
+        if schedule.bedtimes.length > 0 && schedule.wakeup.any?
+            earliest_bedtime = schedule.bedtimes.min_by{|b| b[:time]}
+            if earliest_bedtime[:time] < schedule.wakeup[:time]
+                diff = schedule.wakeup[:time].to_i - earliest_bedtime[:time].to_i
+                mins = diff / 60
+                hours = mins / 60.floor
+                added_mins = mins % 60
+                sleep_duration = {hours: hours, added_mins: added_mins}
+            else
+                date = schedule.wakeup[:time].to_date.prev_day
+                new_schedule = Schedule.find_by(date: date)
+                if new_schedule && new_schedule.bedtimes.length > 0
+                    last_bedtime = new_schedule.bedtimes.max_by{|b| b[:time]}
+                    diff = schedule.wakeup[:time].to_i - last_bedtime[:time].to_i
+                    mins = diff / 60
+                    hours = mins / 60.floor
+                    added_mins = mins % 60
+                    sleep_duration = {hours: hours, added_mins: added_mins}
+                end
+            end
+        elsif schedule.wakeup.any?
+            date = schedule.wakeup[:time].to_date.prev_day
+            new_schedule = Schedule.find_by(date: date)
+            if new_schedule && new_schedule.bedtimes.length > 0
+                last_bedtime = new_schedule.bedtimes.max_by{|b| b[:time]}
+                diff = schedule.wakeup[:time].to_i - last_bedtime[:time].to_i
+                mins = diff / 60
+                hours = mins / 60.floor
+                added_mins = mins % 60
+                sleep_duration = {hours: hours, added_mins: added_mins}
+            end
+        end
         combo1 = Array(schedule.wakeup).concat(schedule.activities)
-        actions_except_foods = Array(schedule.bedtime).concat(combo1)
-        sorted_without_foods = actions_except_foods.sort{|a,b| a.time <=> b.time}
+        actions_except_foods = Array(schedule.bedtimes).concat(combo1)
         food_array = Array(schedule.foods)
-        # byebug
         food_times = food_array.map{|food| food.time}
         unique_times = food_times.uniq
         grouped_foods_array = []
@@ -22,29 +55,45 @@ class SchedulesController < ApplicationController
             grouped_foods_array << {time: time, foods: grouped_foods}
         end
         # byebug
-        all_actions = sorted_without_foods.concat(grouped_foods_array)
+        all_actions = actions_except_foods.concat(grouped_foods_array)
         sorted_actions = all_actions.sort{|a,b| a[:time] <=> b[:time]}
         frontend_array = []
         frontend_array << schedule
         frontend_array << sorted_actions
+        frontend_array << sleep_duration
         # byebug
         render json: frontend_array
     end
+
+    #################################################################################################
 
     def sleep_durations
         schedules = Schedule.where(user_id: session[:user_id])
         durations = []
         schedules.each do |schedule|
-            if schedule.bedtime
-                date = schedule.bedtime['time'].to_date.next_day
+            if schedule.bedtimes.length > 0 && schedule.wakeup.any?
+                earliest_bedtime = schedule.bedtimes.min_by{|b| b[:time]}
+                if earliest_bedtime[:time] < schedule.wakeup[:time]
+                    diff = schedule.wakeup[:time].to_i - schedule.bedtimes[0][:time].to_i
+                    durations << diff
+                else
+                    date = schedule.wakeup[:time].to_date.prev_day
+                    new_schedule = Schedule.find_by(date: date)
+                    if new_schedule && new_schedule.bedtimes.length > 0
+                        last_bedtime = new_schedule.bedtimes.max_by{|b| b[:time]}
+                        diff = schedule.wakeup[:time].to_i - last_bedtime[:time].to_i
+                        durations << diff
+                    end
+                end
+            elsif schedule.wakeup.any?
+                date = schedule.wakeup[:time].to_date.prev_day
                 new_schedule = Schedule.find_by(date: date)
-                if new_schedule && new_schedule.wakeup
-                    diff = new_schedule.wakeup[:time].to_i - schedule.bedtime[:time].to_i
-                    # byebug
+                if new_schedule && new_schedule.bedtimes.length > 0
+                    last_bedtime = new_schedule.bedtimes.max_by{|b| b[:time]}
+                    diff = schedule.wakeup[:time].to_i - last_bedtime[:time].to_i
                     durations << diff
                 end
             end
-        end
         if durations.length != 0
             avg_seconds = durations.sum / durations.size
             avg_minutes = avg_seconds / 60
@@ -53,24 +102,39 @@ class SchedulesController < ApplicationController
             avg_duration = {hours: hours, mins: mins}
             render json: avg_duration
         else
-            render json: {hours: 0, mins: 0}
+            render json: { error: "Insufficient data" }
         end
     end
+
+    #################################################################################################
 
     def optimal_sleep_duration
         schedules = Schedule.where(user_id: session[:user_id])
         durations_with_schedule = []
         schedules.each do |schedule|
-            if schedule.bedtime
-                date = schedule.bedtime['time'].to_date.next_day
+            if schedule.bedtimes.length > 0 && schedule.wakeup.any?
+                earliest_bedtime = schedule.bedtimes.min_by{|b| b[:time]}
+                if earliest_bedtime[:time] < schedule.wakeup[:time]
+                    diff = schedule.wakeup[:time].to_i - schedule.bedtimes[0][:time].to_i
+                    durations_with_schedule << {durations: diff, schedule: schedule}
+                else
+                    date = schedule.wakeup[:time].to_date.prev_day
+                    new_schedule = Schedule.find_by(date: date)
+                    if new_schedule && new_schedule.bedtimes.length > 0
+                        last_bedtime = new_schedule.bedtimes.max_by{|b| b[:time]}
+                        diff = schedule.wakeup[:time].to_i - last_bedtime[:time].to_i
+                        durations_with_schedule << {durations: diff, schedule: new_schedule}
+                    end
+                end
+            elsif schedule.wakeup.any?
+                date = schedule.wakeup[:time].to_date.prev_day
                 new_schedule = Schedule.find_by(date: date)
-                if new_schedule && new_schedule.wakeup
-                    diff = new_schedule.wakeup[:time].to_i - schedule.bedtime[:time].to_i
-                    # byebug
-                    durations_with_schedule << {duration: diff, schedule: new_schedule}
+                if new_schedule && new_schedule.bedtimes.length > 0
+                    last_bedtime = new_schedule.bedtimes.max_by{|b| b[:time]}
+                    diff = schedule.wakeup[:time].to_i - last_bedtime[:time].to_i
+                    durations_with_schedule << {durations: diff, schedule: new_schedule}
                 end
             end
-        end
         schedules_with_activities = durations_with_schedule.select{|obj| obj[:schedule].activities.length != 0}
         if schedules_with_activities.length != 0
             obj_with_best_effort = schedules_with_activities.max_by do |o|
@@ -85,24 +149,39 @@ class SchedulesController < ApplicationController
             optimal_duration = {hours: hours, added_mins: added_mins}
             render json: optimal_duration
         else
-            render json: { hours: 0, added_mins: 0 }
+            render json: { error: "Insufficient data" }
         end
     end
+
+    #################################################################################################
 
     def chart_two_data
         schedules = Schedule.where(user_id: session[:user_id])
         durations_with_schedule = []
         schedules.each do |schedule|
-            if schedule.bedtime
-                date = schedule.bedtime['time'].to_date.next_day
+            if schedule.bedtimes.length > 0 && schedule.wakeup.any?
+                earliest_bedtime = schedule.bedtimes.min_by{|b| b[:time]}
+                if earliest_bedtime[:time] < schedule.wakeup[:time]
+                    diff = schedule.wakeup[:time].to_i - schedule.bedtimes[0][:time].to_i
+                    durations_with_schedule << {durations: diff, schedule: schedule}
+                else
+                    date = schedule.wakeup[:time].to_date.prev_day
+                    new_schedule = Schedule.find_by(date: date)
+                    if new_schedule && new_schedule.bedtimes.length > 0
+                        last_bedtime = new_schedule.bedtimes.max_by{|b| b[:time]}
+                        diff = schedule.wakeup[:time].to_i - last_bedtime[:time].to_i
+                        durations_with_schedule << {durations: diff, schedule: new_schedule}
+                    end
+                end
+            elsif schedule.wakeup.any?
+                date = schedule.wakeup[:time].to_date.prev_day
                 new_schedule = Schedule.find_by(date: date)
-                if new_schedule && new_schedule.wakeup
-                    diff = new_schedule.wakeup[:time].to_i - schedule.bedtime[:time].to_i
-                    # byebug
-                    durations_with_schedule << {duration: diff, schedule: new_schedule}
+                if new_schedule && new_schedule.bedtimes.length > 0
+                    last_bedtime = new_schedule.bedtimes.max_by{|b| b[:time]}
+                    diff = schedule.wakeup[:time].to_i - last_bedtime[:time].to_i
+                    durations_with_schedule << {durations: diff, schedule: new_schedule}
                 end
             end
-        end
         schedules_with_activities = durations_with_schedule.select{|obj| obj[:schedule].activities.length != 0}
         if schedules_with_activities.length != 0
             formatted_chart_data = []

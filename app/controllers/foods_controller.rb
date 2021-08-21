@@ -34,7 +34,7 @@ class FoodsController < ApplicationController
             fav_food[:name] = fav_food[:name].titleize
             render json: fav_food
         else
-            render json: { name: "None" }
+            render json: { error: "Insufficient data" }
         end
     end
 
@@ -64,7 +64,7 @@ class FoodsController < ApplicationController
             best_food[:name] = best_food[:name].titleize
             render json: best_food
         else
-            render json: { name: "None" }
+            render json: { error: "Insufficient data" }
         end
     end
 

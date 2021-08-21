@@ -5,7 +5,7 @@ class BedtimesController < ApplicationController
         # byebug
         schedule = Schedule.find_or_create_by(user_id: session[:user_id], date: date)
         time = Time.parse(params[:time], date)
-        schedule.create_bedtime!(time: time)
+        schedule.bedtimes.create!(time: time)
         render json: schedule.to_json(include: [:wakeup, :activities, :foods, :bedtime])
     end
 

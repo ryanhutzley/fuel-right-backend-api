@@ -23,6 +23,18 @@ function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayed
         }
     }
 
+    let activitiesTotal = 0
+    let sleepDuration = "0h"
+    let foods = "None"
+
+    if (displayedSchedule) {
+        let activities = displayedSchedule[1].filter(action => action.duration)
+        activitiesTotal = activities.length
+        sleepDuration = `${displayedSchedule[2].hours}h ${displayedSchedule[2].added_mins}m`
+        let eats = displayedSchedule[1].filter(action => action.portion)
+        foods = eats.join(", ")
+    }
+
     console.log(displayedSchedule)
     
     return (
@@ -35,6 +47,20 @@ function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayed
                 {index > 0 ? <Button variant="primary" type="button" onClick={handlePrevious} style={{width: '100px'}}>Previous</Button> : null}
                 {index < schedules.length - 1 ? <Button variant="primary" type="button" onClick={handleNext} style={{width: '93px'}}>Next</Button> : null}
             </div>
+            <br></br>
+            {displayedSchedule ? (
+            <div style={{display: 'flex', justifyContent: 'space-between', width: '60%', margin: 'auto', color: 'black', borderRadius: '20px', backgroundColor: '#FFCC66', padding: '20px'}}>
+                <div>
+                    <h3>Number of Activities: </h3>
+                    <h3>Sleep Duration: </h3>
+                    <h3>Foods: </h3>
+                </div>
+                <div>
+                    <h2 style={{display: 'table'}}>{activitiesTotal}</h2>
+                    <h2 style={{display: 'table'}}>{sleepDuration}</h2>
+                    <h2 style={{display: 'table'}}>{foods}</h2>
+                </div>
+            </div> ) : null}
             <br></br>
             <Table striped bordered hover variant="dark" style={{width: '80%', margin: 'auto'}}>
                 {displayedSchedule ? (
@@ -92,7 +118,7 @@ function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayed
                                 )
                             }
                         })
-                    ): null}
+                    ) : null}
                 </tbody>
             </Table>
         </div>
