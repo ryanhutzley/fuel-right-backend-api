@@ -7,7 +7,7 @@ class ActivitiesController < ApplicationController
         time = Time.parse(params[:time], date)
         activity = schedule.activities.create(time: time, name: activity_params[:name].titleize, perceived_effort: activity_params[:perceived_effort], duration: activity_params[:duration])
         if activity.valid?
-            render json: schedule.to_json(include: [:wakeup, :activities, :foods, :bedtime])
+            render json: schedule.to_json(include: [:wakeup, :activities, :foods, :bedtimes])
         else
             render json: { errors: activity.errors.full_messages }, status: :unprocessable_entity
         end

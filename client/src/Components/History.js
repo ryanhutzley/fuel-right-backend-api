@@ -13,7 +13,7 @@ function History({ user, schedules, favFood, avgSleepDuration, bestPerformanceFo
 
     console.log(schedules)
     console.log(favFood)
-    console.log(bestPerformanceFood)
+    console.log(optimalSleepDuration)
 
     let name = "User"
     if (user) {

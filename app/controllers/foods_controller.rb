@@ -11,7 +11,7 @@ class FoodsController < ApplicationController
                 return render json: { errors: food.errors.full_messages }, status: :unprocessable_entity
             end
         end
-        render json: schedule.to_json(include: [:wakeup, :activities, :foods, :bedtime])
+        render json: schedule.to_json(include: [:wakeup, :activities, :foods, :bedtimes])
     end
 
     def favorite_food
@@ -42,7 +42,7 @@ class FoodsController < ApplicationController
         schedules = Schedule.where(user_id: session[:user_id])
         preactivity_foods = []
         schedules.each do |schedule|
-            if schedule.foods && schedule.activities
+            if schedule.foods.exists? && schedule.activities.exists?
                 schedule.activities.each do |activity|
                     time = activity[:time]
                     foods = schedule.foods.where("time < ?", time)
@@ -72,7 +72,7 @@ class FoodsController < ApplicationController
         schedules = Schedule.where(user_id: session[:user_id])
         preactivity_foods = []
         schedules.each do |schedule|
-            if schedule.foods && schedule.activities
+            if schedule.foods.exists? && schedule.activities.exists?
                 schedule.activities.each do |activity|
                     time = activity[:time]
                     foods = schedule.foods.where("time < ?", time)

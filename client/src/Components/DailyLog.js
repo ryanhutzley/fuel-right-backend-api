@@ -25,17 +25,24 @@ function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayed
 
     let activitiesTotal = 0
     let sleepDuration = "0h"
-    let foods = "None"
+    let foods = 0
 
     if (displayedSchedule) {
         let activities = displayedSchedule[1].filter(action => action.duration)
         activitiesTotal = activities.length
         sleepDuration = `${displayedSchedule[2].hours}h ${displayedSchedule[2].added_mins}m`
-        let eats = displayedSchedule[1].filter(action => action.portion)
-        foods = eats.join(", ")
+        let foodAction = displayedSchedule[1].filter(action => action.foods)
+        let foodNames = []
+        foodAction.map(action => {
+            action.foods.forEach(food => foodNames.push(food.name))
+        })
+        if (foodNames.length > 0) {
+            foods = foodNames.length
+        }
     }
 
     console.log(displayedSchedule)
+    console.log(foods)
     
     return (
         <div style={{minHeight: '100vh'}}>
@@ -49,18 +56,19 @@ function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayed
             </div>
             <br></br>
             {displayedSchedule ? (
-            <div style={{display: 'flex', justifyContent: 'space-between', width: '60%', margin: 'auto', color: 'black', borderRadius: '20px', backgroundColor: '#FFCC66', padding: '20px'}}>
+            <div style={{display: 'flex', justifyContent: 'space-between', width: '40%', margin: 'auto', color: 'black', borderRadius: '20px', backgroundColor: '#FFCC66', padding: '20px'}}>
                 <div>
                     <h3>Number of Activities: </h3>
                     <h3>Sleep Duration: </h3>
-                    <h3>Foods: </h3>
+                    <h3>Number of Foods: </h3>
                 </div>
                 <div>
-                    <h2 style={{display: 'table'}}>{activitiesTotal}</h2>
-                    <h2 style={{display: 'table'}}>{sleepDuration}</h2>
-                    <h2 style={{display: 'table'}}>{foods}</h2>
+                    <h2 style={{display: 'table', fontSize: '28px'}}>{activitiesTotal}</h2>
+                    <h2 style={{display: 'table', fontSize: '28px'}}>{sleepDuration}</h2>
+                    <h2 style={{display: 'table', fontSize: '28px'}}>{foods}</h2>
                 </div>
             </div> ) : null}
+            <br></br>
             <br></br>
             <Table striped bordered hover variant="dark" style={{width: '80%', margin: 'auto'}}>
                 {displayedSchedule ? (

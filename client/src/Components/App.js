@@ -72,9 +72,10 @@ function App() {
     .then(data => {
       if (data.error) {
         getSleepDurations()
+      } else {
+        setFavFood(data)
+        getSleepDurations()
       }
-      setFavFood(data)
-      getSleepDurations()
     })
   }
 
@@ -85,9 +86,10 @@ function App() {
       console.log(data)
       if (data.error) {
         getBestPerformanceFood()
+      } else {
+        setAverageSleepDuration(data)
+        getBestPerformanceFood()
       }
-      setAverageSleepDuration(data)
-      getBestPerformanceFood()
     })
   }
 
@@ -97,9 +99,10 @@ function App() {
     .then(data => {
       if (data.error) {
         getOptimalSleepDuration()
+      } else {
+        setBestPerformanceFood(data)
+        getOptimalSleepDuration()
       }
-      setBestPerformanceFood(data)
-      getOptimalSleepDuration()
     })
   }
 
@@ -109,9 +112,10 @@ function App() {
     .then(data => {
       if (data.error) {
         getChartOneData()
+      } else {
+        setOptimalSleepDuration(data)
+        getChartOneData()
       }
-      setOptimalSleepDuration(data)
-      getChartOneData()
     })
   }
 
@@ -121,9 +125,10 @@ function App() {
     .then(data => {
       if (data.error) {
         getChartTwoData()
+      } else {
+        setChartOneData(data)
+        getChartTwoData()
       }
-      setChartOneData(data)
-      getChartTwoData()
     })
   }
 
@@ -133,8 +138,9 @@ function App() {
     .then(data => {
       if (data.error) {
         setChartTwoData(null)
+      } else {
+        setChartTwoData(data)
       }
-      setChartTwoData(data)
     })
   }
 
