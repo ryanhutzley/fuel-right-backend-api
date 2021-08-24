@@ -51,8 +51,25 @@ function App() {
       if (data.length !== 0) {
         setSchedules(data)
         setIndex(data.length - 1)
+        setDisplayedSchedule(null)
+        setFavFood(null)
+        setAverageSleepDuration(null)
+        setBestPerformanceFood(null)
+        setOptimalSleepDuration(null)
+        setChartOneData(null)
+        setChartTwoData(null)
         getSingleSchedule(data[data.length - 1].id)
         console.log(data)
+      } else {
+        setSchedules([])
+        setIndex(0)
+        setDisplayedSchedule(null)
+        setFavFood(null)
+        setAverageSleepDuration(null)
+        setBestPerformanceFood(null)
+        setOptimalSleepDuration(null)
+        setChartOneData(null)
+        setChartTwoData(null)
       }
     })
   }
@@ -220,7 +237,7 @@ function App() {
     fetch(`/schedules/${id}`, {
       method: "DELETE"
     })
-    .then(getSchedules)
+    .then(() => getSchedules())
   }
 
   console.log(user)

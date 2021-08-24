@@ -37,7 +37,7 @@ class BedtimesController < ApplicationController
                 schedule.bedtimes.create!(time: time)
                 render json: schedule.to_json(include: [:wakeup, :activities, :foods, :bedtimes])
             end
-        elsif schedule.bedtimes.size > 0
+        elsif schedule.bedtimes.size == 1
             first_bedtime = schedule.bedtimes.min_by{|b| b[:time]}
             wakeup = Wakeup.where(["time > ? and time < ? and schedule_id = ?", first_bedtime[:time], time, schedule.id])
             if wakeup.exists?
@@ -46,7 +46,7 @@ class BedtimesController < ApplicationController
             else
                 render json: { errors: ["Invalid selection, must separate bedtimes with wakeup action"] }, status: :unprocessable_entity
             end
-        elsif schedule.bedtimes.size > 1
+        elsif schedule.bedtimes.size == 2
             render json: { errors: ["Invalid selection, too many bedtimes"] }, status: :unprocessable_entity
         end
     end
