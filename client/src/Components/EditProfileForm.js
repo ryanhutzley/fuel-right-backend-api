@@ -18,7 +18,8 @@ function EditProfileForm({ user, handleUserUpdate, handleUserDelete, errors }) {
         setShow(false)
     }
 
-    function handleShow() {
+    function handleShow(e) {
+        e.target.blur()
         setShow(true)
     }
 

@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :foods, only: [:create]
   resources :bedtimes, only: [:create]
   resources :wakeups, only: [:create]
-  resources :schedules, only: [:index, :show]
+  resources :schedules, only: [:index, :show, :destroy]
   resources :users, except: [:create, :index]
 
   # get "/schedule_today", to: "schedules#today"

@@ -1,7 +1,8 @@
-import { Table, Button } from 'react-bootstrap'
+import { Table, Button, Modal } from 'react-bootstrap'
 import { useEffect, useState } from 'react'
 
-function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayedSchedule }) {
+function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayedSchedule, handleScheduleDelete }) {
+    const [show, setShow] = useState(false)
     
     const regex = /\d+:\d+/g
 
@@ -41,6 +42,20 @@ function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayed
         }
     }
 
+    function handleShow(e) {
+        e.target.blur()
+        setShow(true)
+    }
+
+    function handleClose() {
+        setShow(false)
+    }
+
+    function handleDelete() {
+        handleScheduleDelete(displayedSchedule[0].id)
+        setShow(false)
+    }
+
     console.log(displayedSchedule)
     console.log(foods)
     
@@ -50,7 +65,7 @@ function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayed
             <br></br>
             <h1 id="pop" style={{color: 'white', display: 'table', margin: 'auto', backgroundColor: 'blue', padding: '10px', borderRadius: '10px'}}>{displayedSchedule ? `${displayedSchedule[0].date}` : "No schedules to display"}</h1>
             <br></br>
-            <div style={{display: 'flex', justifyContent: 'center', width: '15%', margin: 'auto'}}>
+            <div style={{display: 'flex', justifyContent: index > 0 && index < schedules.length - 1 ? 'space-between' : 'center', width: '15%', margin: 'auto'}}>
                 {index > 0 ? <Button variant="primary" type="button" onClick={handlePrevious} style={{width: '100px'}}>Previous</Button> : null}
                 {index < schedules.length - 1 ? <Button variant="primary" type="button" onClick={handleNext} style={{width: '93px'}}>Next</Button> : null}
             </div>
@@ -129,41 +144,32 @@ function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayed
                     ) : null}
                 </tbody>
             </Table>
+            <br></br>
+            <br></br>
+            {displayedSchedule ? (
+                <Button variant="danger" type="button" onClick={handleShow} style={{display: 'flex', width: '12%', margin: 'auto', justifyContent: 'center'}}>Delete Schedule</Button>) : null}
+            <Modal 
+                show={show}
+                onHide={handleClose}
+                backdrop="static"
+                keyboard={false}
+                centered
+            >
+                <Modal.Header>
+                    <Modal.Title>You're about to delete this schedule</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to delete?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        No, take me back!
+                    </Button>
+                    <Button variant="danger" onClick={handleDelete}>
+                        Yes, get rid of this schedule!
+                    </Button>
+                </Modal.Footer>
+            </Modal> 
         </div>
     )
 }
 
 export default DailyLog
-
-{/* <tr>
-    <td>2</td>
-    <td>Jacob</td>
-    <td>Thornton</td>
-    <td>@fat</td>
-</tr>
-<tr>
-    <td>3</td>
-    <td colSpan="2">Larry the Bird</td>
-    <td>@twitter</td>
-</tr> */}
-
-
-// useEffect(() => {
-    //     async function getSchedules() {
-    //         const res = await fetch('/schedules')
-    //         const data = await res.json()
-    //         if (res.ok) {
-    //             setSchedules(data)
-    //             setIndex(data.length - 1)
-    //             getFirstSchedule(data[data.length - 1].id)
-    //             console.log(data)
-    //         }
-    //     }
-    //     getSchedules()
-    // }, [])
-
-    // function getFirstSchedule(id) {
-    //     fetch(`schedules/${id}`)
-    //     .then(res => res.json())
-    //     .then(console.log)
-    // }

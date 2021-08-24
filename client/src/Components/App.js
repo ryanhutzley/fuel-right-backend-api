@@ -216,6 +216,13 @@ function App() {
     }
   }
 
+  function handleScheduleDelete(id) {
+    fetch(`/schedules/${id}`, {
+      method: "DELETE"
+    })
+    .then(getSchedules)
+  }
+
   console.log(user)
   console.log(avgSleepDuration)
 
@@ -228,7 +235,7 @@ function App() {
             {user ? <TrackerForm addEntry={addEntry} displayForm={displayForm} setDisplayForm={setDisplayForm} errors={errors} /> : <Login />}
           </Route>
           <Route exact path="/day">
-            {user ? <DailyLog schedules={schedules} index={index} setIndex={setIndex} handleSchedulesScroll={handleSchedulesScroll} displayedSchedule={displayedSchedule} /> : <Login />}
+            {user ? <DailyLog schedules={schedules} index={index} setIndex={setIndex} handleSchedulesScroll={handleSchedulesScroll} displayedSchedule={displayedSchedule} handleScheduleDelete={handleScheduleDelete} /> : <Login />}
           </Route>
           <Route exact path="/history">
             {user ? <History user={user} schedules={schedules} favFood={favFood} avgSleepDuration={avgSleepDuration} bestPerformanceFood={bestPerformanceFood} optimalSleepDuration={optimalSleepDuration} chartOneData={chartOneData} chartTwoData={chartTwoData} /> : <Login />}

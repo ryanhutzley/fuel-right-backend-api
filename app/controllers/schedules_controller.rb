@@ -8,6 +8,13 @@ class SchedulesController < ApplicationController
     end
 
     #################################################################################################
+    
+    def destroy
+        schedule = Schedule.find_by(id: params[:id])
+        schedule.destroy
+    end
+    
+    #################################################################################################
 
     def show
         schedule = Schedule.find_by(id: params[:id])
