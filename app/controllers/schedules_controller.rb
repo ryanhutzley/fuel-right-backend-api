@@ -18,7 +18,7 @@ class SchedulesController < ApplicationController
 
     def show
         schedule = Schedule.find_by(id: params[:id])
-        sleep_duration = {hours: 0, added_mins: 0}
+        sleep_duration = "No bedtime found"
         if schedule.bedtimes.length > 0 && schedule.wakeup
             earliest_bedtime = schedule.bedtimes.min_by{|b| b[:time]}
             if earliest_bedtime[:time] < schedule.wakeup[:time]
@@ -219,7 +219,7 @@ class SchedulesController < ApplicationController
                 hours = minutes / 60.floor
                 added_mins = minutes % 60
                 final_duration = "#{hours}h #{added_mins}m"
-                formatted_chart_data << {duration: final_duration, RPE: avg_rpe}
+                formatted_chart_data << {duration: final_duration, RPE: avg_rpe.round(2)}
             end
             final_data = []
             durations = []

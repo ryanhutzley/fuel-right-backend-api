@@ -113,8 +113,8 @@ class FoodsController < ApplicationController
                     # name = duplicates[0][:name]
                     rpes = duplicates.map{|d| d[:RPE].to_f}
                     total_rpe = rpes.reduce(0){|sum, r| sum + r}
-                    avg_rpe = total_rpe / rpes.size
-                    final_data << {name: obj[:name].titleize, RPE: avg_rpe}
+                    avg_rpe = total_rpe.to_f / rpes.size.to_f
+                    final_data << {name: obj[:name].titleize, RPE: avg_rpe.round(2)}
                     names << obj[:name]
                 end
             end

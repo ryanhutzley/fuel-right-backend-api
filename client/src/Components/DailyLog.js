@@ -25,13 +25,12 @@ function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayed
     }
 
     let activitiesTotal = 0
-    let sleepDuration = "0h"
+    let sleepDuration = "No bedtime found"
     let foods = 0
 
     if (displayedSchedule) {
         let activities = displayedSchedule[1].filter(action => action.duration)
         activitiesTotal = activities.length
-        sleepDuration = `${displayedSchedule[2].hours}h ${displayedSchedule[2].added_mins}m`
         let foodAction = displayedSchedule[1].filter(action => action.foods)
         let foodNames = []
         foodAction.map(action => {
@@ -39,6 +38,9 @@ function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayed
         })
         if (foodNames.length > 0) {
             foods = foodNames.length
+        }
+        if (displayedSchedule[2].hours) {
+            sleepDuration = `${displayedSchedule[2].hours}h ${displayedSchedule[2].added_mins}m`
         }
     }
 
