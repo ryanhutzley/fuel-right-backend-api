@@ -4,7 +4,7 @@ class WakeupsController < ApplicationController
         date = Date.parse(params[:date])
         # byebug
         schedule = Schedule.find_or_create_by(user_id: session[:user_id], date: date)
-        yesterday_schedule = Schedule.find_by(date: date.prev_day)
+        yesterday_schedule = Schedule.find_by(date: date.prev_day, user_id: session[:user_id])
         time = Time.parse(params[:time], date)
         if schedule.wakeup
             render json: { errors: ["Wakeup already recorded"] }, status: :unprocessable_entity
@@ -15,7 +15,23 @@ class WakeupsController < ApplicationController
                     schedule.create_wakeup!(time: time)
                     render json: schedule.to_json(include: [:wakeup, :activities, :foods, :bedtimes])
                 else
-                    render json: { errors: ["Invalid selection, wakeup must have preceding bedtime"] }, status: :unprocessable_entity
+                    if !yesterday_schedule
+                        schedule.create_wakeup!(time: time)
+                        render json: schedule.to_json(include: [:wakeup, :activities, :foods, :bedtimes])
+                    else
+                        if yesterday_schedule.bedtimes.size > 0 && yesterday_schedule.wakeup
+                            last_bedtime = yesterday_schedule.bedtimes.max_by{|b| b[:time]}
+                            if last_bedtime[:time] > yesterday_schedule.wakeup[:time]
+                                schedule.create_wakeup!(time: time)
+                                render json: schedule.to_json(include: [:wakeup, :activities, :foods, :bedtimes])
+                            else
+                                render json: { errors: ["Invalid selection, wakeup must have preceding bedtime"] }, status: :unprocessable_entity
+                            end
+                        else
+                            schedule.create_wakeup!(time: time)
+                            render json: schedule.to_json(include: [:wakeup, :activities, :foods, :bedtimes])
+                        end
+                    end
                 end
             else
                 if yesterday_schedule && yesterday_schedule.bedtimes.size > 0 && yesterday_schedule.wakeup

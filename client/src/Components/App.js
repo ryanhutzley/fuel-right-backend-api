@@ -246,25 +246,23 @@ function App() {
   return (
     <div className="App">
       {user ? <NavBar user={user} logout={logOut} setDisplayForm={setDisplayForm} setErrors={setErrors} /> : null}
-      <div className="bg">
-        <Switch>
-          <Route exact path="/">
-            {user ? <TrackerForm addEntry={addEntry} displayForm={displayForm} setDisplayForm={setDisplayForm} errors={errors} /> : <Login />}
-          </Route>
-          <Route exact path="/day">
-            {user ? <DailyLog schedules={schedules} index={index} setIndex={setIndex} handleSchedulesScroll={handleSchedulesScroll} displayedSchedule={displayedSchedule} handleScheduleDelete={handleScheduleDelete} /> : <Login />}
-          </Route>
-          <Route exact path="/history">
-            {user ? <History user={user} schedules={schedules} favFood={favFood} avgSleepDuration={avgSleepDuration} bestPerformanceFood={bestPerformanceFood} optimalSleepDuration={optimalSleepDuration} chartOneData={chartOneData} chartTwoData={chartTwoData} /> : <Login />}
-          </Route>
-          <Route exact path="/edit">
-            {user ? <EditProfileForm user={user} handleUserUpdate={handleUserUpdate} handleUserDelete={handleUserDelete} errors={errors}/> : <Login />}
-          </Route>
-          <Route exact path="/login">
-            <Login onLogin={onLogin} setDisplayForm={setDisplayForm} />
-          </Route>
-        </Switch>
-      </div>
+      <Switch>
+        <Route exact path="/">
+          {user ? <TrackerForm addEntry={addEntry} displayForm={displayForm} setDisplayForm={setDisplayForm} errors={errors} /> : <Login />}
+        </Route>
+        <Route exact path="/day">
+          {user ? <DailyLog schedules={schedules} index={index} setIndex={setIndex} handleSchedulesScroll={handleSchedulesScroll} displayedSchedule={displayedSchedule} handleScheduleDelete={handleScheduleDelete} /> : <Login />}
+        </Route>
+        <Route exact path="/history">
+          {user ? <History user={user} schedules={schedules} favFood={favFood} avgSleepDuration={avgSleepDuration} bestPerformanceFood={bestPerformanceFood} optimalSleepDuration={optimalSleepDuration} chartOneData={chartOneData} chartTwoData={chartTwoData} /> : <Login />}
+        </Route>
+        <Route exact path="/edit">
+          {user ? <EditProfileForm user={user} handleUserUpdate={handleUserUpdate} handleUserDelete={handleUserDelete} errors={errors}/> : <Login />}
+        </Route>
+        <Route exact path="/login">
+          <Login onLogin={onLogin} setDisplayForm={setDisplayForm} />
+        </Route>
+      </Switch>
     </div>
   );
 }

@@ -15,6 +15,7 @@ function TrackerForm({ addEntry, displayForm, setDisplayForm, errors }) {
 
     function handleSubmit(e) {
         e.preventDefault()
+        e.target[3].blur()
         if (selected.wakeup) {   
             let payload = { date, time }
             addEntry(action.toLowerCase(), payload)
@@ -178,7 +179,6 @@ function TrackerForm({ addEntry, displayForm, setDisplayForm, errors }) {
                                         <Button variant="primary" type="submit">
                                             Submit Entry
                                         </Button>
-                                        <br></br>
                                         <br></br>
                                         {errors !== [] ? 
                                         (<div>

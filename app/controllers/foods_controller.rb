@@ -55,12 +55,24 @@ class FoodsController < ApplicationController
             end
         end
         if preactivity_foods.length != 0
-            best_food = preactivity_foods.max_by do |food|
-                schedule = Schedule.find_by(id: food[:schedule_id])
-                post_food_activities = schedule.activities.where("time > ?", food[:time])
-                closest_activity_to_food = post_food_activities.min_by{|a| a[:time]}
-                closest_activity_to_food[:perceived_effort]
+            data_with_rpe = []
+            names = []
+            preactivity_foods.each do |food|
+                duplicates = preactivity_foods.select{|f| f[:name].downcase == food[:name].downcase}
+                if !names.include?(food[:name].downcase)
+                    perceived_efforts = []
+                    duplicates.each do |d|
+                        schedule = Schedule.find_by(id: d[:schedule_id])
+                        post_food_activities = schedule.activities.where("time > ?", d[:time])
+                        closest_activity_to_food = post_food_activities.min_by{|a| a[:time]}
+                        perceived_efforts << closest_activity_to_food[:perceived_effort]
+                    end
+                    average_rpe = perceived_efforts.sum.to_f / perceived_efforts.size.to_f
+                    data_with_rpe << {name: food[:name], RPE: average_rpe}
+                    names << food[:name]
+                end
             end
+            best_food = data_with_rpe.max_by{|data| data[:RPE]}
             best_food[:name] = best_food[:name].titleize
             render json: best_food
         else

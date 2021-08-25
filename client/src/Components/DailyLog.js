@@ -148,6 +148,8 @@ function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayed
             <br></br>
             {displayedSchedule ? (
                 <Button variant="danger" type="button" onClick={handleShow} style={{display: 'flex', width: '12%', margin: 'auto', justifyContent: 'center'}}>Delete Schedule</Button>) : null}
+            <br></br>
+            <br></br>
             <Modal 
                 show={show}
                 onHide={handleClose}

@@ -85,7 +85,6 @@ function EditProfileForm({ user, handleUserUpdate, handleUserDelete, errors }) {
                                                 </Modal> 
                                             </div>
                                             <br></br>
-                                            <br></br>
                                             {errors !== [] ? 
                                             (<div>
                                                 {errors.map((error, index)=> (<p style={{color: 'red', marginBottom: '0px', marginTop: '10px'}} key={index}>{error}</p>))}
@@ -97,10 +96,6 @@ function EditProfileForm({ user, handleUserUpdate, handleUserDelete, errors }) {
                             </div>
                         </div>
                     </div>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <br></br>
             </section>
         </div>
     )

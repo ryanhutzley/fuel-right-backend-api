@@ -13,6 +13,7 @@ function History({ user, schedules, favFood, avgSleepDuration, bestPerformanceFo
 
     console.log(schedules)
     console.log(favFood)
+    console.log(bestPerformanceFood)
     console.log(optimalSleepDuration)
 
     let name = "User"
@@ -60,7 +61,7 @@ function History({ user, schedules, favFood, avgSleepDuration, bestPerformanceFo
                 }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
+                    <XAxis dataKey="name" style={{fontSize: 'small'}} />
                     <YAxis />
                     <Tooltip />
                     {/* <Bar dataKey="pv" fill="#8884d8" /> */}
@@ -84,7 +85,7 @@ function History({ user, schedules, favFood, avgSleepDuration, bestPerformanceFo
                 }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="duration" />
+                    <XAxis dataKey="duration" style={{fontSize: 'small'}} />
                     <YAxis />
                     <Tooltip />
                     <Bar dataKey="RPE" fill="#8884d8" />
