@@ -1,5 +1,5 @@
 {
-    "name": "phase-5-project",
+    "name": "fuel-right-backend-api",
     "description": "Build scripts for Heroku",
     "engines": {
         "node": ">= 14"
