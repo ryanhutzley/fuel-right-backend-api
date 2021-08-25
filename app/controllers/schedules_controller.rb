@@ -18,7 +18,7 @@ class SchedulesController < ApplicationController
 
     def show
         schedule = Schedule.find_by(id: params[:id])
-        sleep_duration = "No bedtime found"
+        sleep_duration = "Insufficient data"
         if schedule.bedtimes.length > 0 && schedule.wakeup
             earliest_bedtime = schedule.bedtimes.min_by{|b| b[:time]}
             if earliest_bedtime[:time] < schedule.wakeup[:time]

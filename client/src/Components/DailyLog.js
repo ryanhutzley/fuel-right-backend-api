@@ -25,7 +25,7 @@ function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayed
     }
 
     let activitiesTotal = 0
-    let sleepDuration = "No bedtime found"
+    let sleepDuration = "Insufficient data"
     let foods = 0
 
     if (displayedSchedule) {
