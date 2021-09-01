@@ -1,24 +1,39 @@
-# README
+<!-- [![Build Status](https://travis-ci.com/ryanhutzley/fuel-right-backend-api.svg?branch=master)](https://travis-ci.com/ryanhutzley/fuel-right-backend-api)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+[![Code Coverage](https://img.shields.io/codecov/c/github/ryanhutzley/fuel-right-backend-api)](https://codecov.io/github/ryanhutzley/fuel-right-backend-api) -->
 
-Things you may want to cover:
+# Flatiron Phase 5 Project - FuelRight
 
-* Ruby version
+## Description
 
-* System dependencies
+A food, workout, and sleep tracker that helps users visualize how sleep duration and nutrition impact workout performance. 
 
-* Configuration
+## Requirements
 
-* Database creation
+- Ruby 2.7.4
+- NodeJS (v14 or higher), and npm
+- Postgresql
 
-* Database initialization
+## Setup
 
-* How to run the test suite
+**Fork and clone this repository**.
 
-* Services (job queues, cache servers, search engines, etc.)
+Then run:
 
-* Deployment instructions
+```sh
+bundle install
+rails db:create
+npm install --prefix client
+```
 
-* ...
+You can use the following commands to run the application:
+
+- `rails s`: run the backend on [http://localhost:3000](http://localhost:3000)
+- `npm start --prefix client`: run the frontend on
+  [http://localhost:4000](http://localhost:4000)
+- `rails start`: run the frontend and backend together with one command
+
+
+## Acknowledgements
+
+This application was built using React, React Bootstrap, [recharts](https://github.com/recharts/recharts), Rails, PostgreSQL, and BCrypt
