@@ -36,4 +36,4 @@ You can use the following commands to run the application:
 
 ## Acknowledgements
 
-This application was built using React, React Bootstrap, [recharts](https://github.com/recharts/recharts), Rails, PostgreSQL, and BCrypt
+The frontend for this application was built using React, React Bootstrap, and [recharts](https://github.com/recharts/recharts). The rails backend was configured using ActiveRecord, PostgreSQL, and BCrypt.
