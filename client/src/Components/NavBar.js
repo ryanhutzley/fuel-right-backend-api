@@ -9,7 +9,7 @@ function NavBar({ user, logout, setDisplayForm, setErrors }) {
     }
 
     return (
-        <Navbar bg="dark" variant="dark" sticky="top">
+        <Navbar bg="dark" variant="dark" sticky="top" style={{minWidth: '100vw'}}>
             <Container id="container">
             <Navbar.Brand id="brand">FuelRight</Navbar.Brand>
                 <Nav className="me-auto">

@@ -30,7 +30,7 @@ function EditProfileForm({ user, handleUserUpdate, handleUserDelete, errors }) {
 
 
     return (
-        <div style={{minHeight: '100vh'}}>
+        <div style={{minHeight: '100vh', minWidth: '100vw'}}>
             <br></br>
             <br></br>
             <br></br>

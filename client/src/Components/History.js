@@ -22,26 +22,32 @@ function History({ user, schedules, favFood, avgSleepDuration, bestPerformanceFo
     }
 
     return (
-        <div style={{minHeight: '100vh'}}>
+        <div style={{minHeight: '100vh', minWidth: '100vw'}}>
             <br></br>
             <br></br>
             <h1 id="pop" style={{color: 'white', display: 'table', margin: 'auto', backgroundColor: 'blue', padding: '10px', borderRadius: '10px'}}>{`${name}'s History`}</h1>
             <br></br>
             <br></br>
-            <div style={{display: 'flex', justifyContent: 'space-between', width: '60%', margin: 'auto', color: 'black', borderRadius: '20px', backgroundColor: '#FFCC66', padding: '20px'}}>
-                <div>
-                    <h2>Total Number of Activities: </h2>
-                    <h2>Average Sleep Duration: </h2>
-                    <h2>Favorite Food: </h2>
-                    <h2>Best Food for Performance: </h2>
-                    <h2>Optimal Sleep Duration: </h2>
+            <div style={{display: 'flex', flexDirection: 'column', width: '47%', margin: 'auto', color: 'black', borderRadius: '20px', backgroundColor: '#FFCC66', padding: '20px'}}>
+                <div style={{display: 'inline-flex', flexDirection: 'row', flexWrap: 'wrap'}}>
+                    <h2 style={{marginRight: '1%'}}>Total Number of Activities ➡️ </h2>
+                    <h2 style={{textDecorationLine: 'underline', float: 'right'}}>{activitiesTotal}</h2>
                 </div>
-                <div>
-                    <h2 style={{display: 'table'}}>{activitiesTotal}</h2>
-                    <h2 style={{display: 'table'}}>{avgSleepDuration ? `${avgSleepDuration.hours}h ${avgSleepDuration.mins}m` : '0h'}</h2>
-                    <h2 style={{display: 'table'}}>{favFood ? favFood.name : 'None'}</h2>
-                    <h2 style={{display: 'table'}}>{bestPerformanceFood ? bestPerformanceFood.name : 'None'}</h2>
-                    <h2 style={{display: 'table'}}>{optimalSleepDuration ? `${optimalSleepDuration.hours}h ${optimalSleepDuration.added_mins}m` : '0h'}</h2>
+                <div style={{display: 'inline-flex', flexDirection: 'row', flexWrap: 'wrap'}}>
+                    <h2 style={{marginRight: '1%'}}>Average Sleep Duration ➡️ </h2>
+                    <h2 style={{textDecorationLine: 'underline', float: 'right'}}>{avgSleepDuration ? `${avgSleepDuration.hours}h ${avgSleepDuration.mins}m` : '0h'}</h2>
+                </div>
+                <div style={{display: 'inline-flex', flexDirection: 'row', flexWrap: 'wrap'}}>
+                    <h2 style={{marginRight: '1%'}}>Favorite Food ➡️ </h2>
+                    <h2 style={{textDecorationLine: 'underline', float: 'right'}}>{favFood ? favFood.name : 'None'}</h2>
+                </div>
+                <div style={{display: 'inline-flex', flexDirection: 'row', flexWrap: 'wrap'}}>
+                    <h2 style={{marginRight: '1%'}}>Best Food for Performance ➡️ </h2>
+                    <h2 style={{textDecorationLine: 'underline', float: 'right'}}>{bestPerformanceFood ? bestPerformanceFood.name : 'None'}</h2>
+                </div>
+                <div style={{display: 'inline-flex', flexDirection: 'row', flexWrap: 'wrap'}}>
+                    <h2 style={{marginRight: '1%'}}>Optimal Sleep Duration ➡️ </h2>
+                    <h2 style={{textDecorationLine: 'underline', float: 'right'}}>{optimalSleepDuration ? `${optimalSleepDuration.hours}h ${optimalSleepDuration.added_mins}m` : '0h'}</h2>
                 </div>
             </div>
             <br></br>

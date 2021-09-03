@@ -110,7 +110,7 @@ function TrackerForm({ addEntry, displayForm, setDisplayForm, errors }) {
     return (
         <>
             {displayForm ? (
-            <section className="gradient-custom" style={{minHeight: '100vh'}}>
+            <section className="gradient-custom" style={{minHeight: '100vh', minWidth: '100vw'}}>
                 <div className="container py-6">
                     <div className="row justify-content-center align-items-center h-100">
                         <div className="col-12 col-lg-9 col-xl-7">
@@ -192,7 +192,7 @@ function TrackerForm({ addEntry, displayForm, setDisplayForm, errors }) {
                     </div>
                 </div>
             </section> ) : (
-                <section className="gradient-custom" style={{minHeight: '100vh'}}>
+                <section className="gradient-custom" style={{minHeight: '100vh', minWidth: '100vw'}}>
                     <div className="container py-6">
                         <div className="row justify-content-center align-items-center h-100">
                             <div className="col-12 col-lg-9 col-xl-7">

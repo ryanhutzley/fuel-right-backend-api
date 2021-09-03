@@ -83,7 +83,7 @@ function Login({ onLogin, setDisplayForm }) {
     // console.log(existingUser)
 
     return (
-        <div>
+        <div  style={{minHeight: '100vh', minWidth: '100vw'}}>
             {formDisplayed ? (
                 <>
                 <div style={{display: 'flex', alignItems:'center', flexDirection: 'column', textAlign: 'center', width: '80%', margin: 'auto', color: 'white'}}>
@@ -156,26 +156,13 @@ function Login({ onLogin, setDisplayForm }) {
                 </>
             ) : (
                 <>
-                    {/* <div style={{display: 'flex', alignItems:'center', flexDirection: 'column', textAlign: 'center', width: '80%', margin: 'auto', color: 'white'}}>
-                        <h1 style={{marginTop: '50px', textAlign: 'center'}}>Welcome to <span id="brand" style={{textDecorationLine: 'underline'}}>FuelRight</span></h1>
-                        <br></br>
-                        <br></br>
-                        <div>
-                            <h3 style={{fontStyle: 'italic'}}>A digital lifestyle log so you can optimize your performance in the arena of your choosing</h3>
-                            <br></br>
-                            <h3 style={{fontStyle: 'italic'}}>Unlocking a better you is hard...</h3>
-                            <br></br>
-                            <br></br>
-                            <h3><span id="brand" style={{textDecorationLine: 'underline', fontStyle: 'bolder'}}>FuelRight</span> makes it simple</h3>
-                        </div>
-                    </div> */}
-                    <section className="gradient-custom" style={{minHeight: '100vh'}}>
+                    <section className="gradient-custom">
                         <div className="container py-6">
                             <div className="row justify-content-center align-items-center h-100">
                                 <div className="col-12 col-lg-9 col-xl-7">
                                     <div className="card shadow-2-strong card-registration" style={{borderRadius: "15px"}}>
                                         <div className="card-body p-4 p-md-5">
-                                            <h3 className="mb-4 pb-2 pb-md-0 mb-md-5">FuelRight Signup</h3>
+                                            <h3 className="mb-4 pb-2 pb-md-0 mb-md-5">FuelRight Login</h3>
                                             <Form onSubmit={handleLogin}>
                                                 
                                                 <Form.Group className="mb-3" controlId="formBasicEmail">

@@ -62,10 +62,10 @@ function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayed
     console.log(foods)
     
     return (
-        <div style={{minHeight: '100vh'}}>
+        <div style={{minHeight: '100vh', minWidth: '100vw'}}>
             <br></br>
             <br></br>
-            <h1 id="pop" style={{color: 'white', display: 'table', margin: 'auto', backgroundColor: 'blue', padding: '10px', borderRadius: '10px'}}>{displayedSchedule ? `${displayedSchedule[0].date}` : "No schedules to display"}</h1>
+            <h1 id="pop" style={{color: 'white', display: 'table', margin: 'auto', backgroundColor: 'blue', padding: '20px', borderRadius: '10px'}}>{displayedSchedule ? `${displayedSchedule[0].date}` : "No schedules to display"}</h1>
             <br></br>
             <div style={{display: 'flex', justifyContent: index > 0 && index < schedules.length - 1 ? 'space-between' : 'center', width: '15%', margin: 'auto'}}>
                 {index > 0 ? <Button variant="primary" type="button" onClick={handlePrevious} style={{width: '100px'}}>Previous</Button> : null}
@@ -73,16 +73,18 @@ function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayed
             </div>
             <br></br>
             {displayedSchedule ? (
-            <div style={{display: 'flex', justifyContent: 'space-between', width: '40%', margin: 'auto', color: 'black', borderRadius: '20px', backgroundColor: '#FFCC66', padding: '20px'}}>
-                <div>
-                    <h3>Number of Activities: </h3>
-                    <h3>Sleep Duration: </h3>
-                    <h3>Number of Foods: </h3>
+            <div style={{display: 'flex', flexDirection: 'column', width: '26%', margin: 'auto', color: 'black', borderRadius: '20px', backgroundColor: '#FFCC66', padding: '20px'}}>
+                <div style={{display: 'inline-flex', flexDirection: 'row', flexWrap: 'wrap'}}>
+                    <h3 style={{marginRight: '5%'}}>Number of Activities ➡️ </h3>
+                    <h3 style={{textDecorationLine: 'underline', float: 'right'}}>{activitiesTotal}</h3>
                 </div>
-                <div>
-                    <h2 style={{display: 'table', fontSize: '28px'}}>{activitiesTotal}</h2>
-                    <h2 style={{display: 'table', fontSize: '28px'}}>{sleepDuration}</h2>
-                    <h2 style={{display: 'table', fontSize: '28px'}}>{foods}</h2>
+                <div style={{display: 'inline-flex', flexDirection: 'row', flexWrap: 'wrap'}}>
+                    <h3 style={{marginRight: '5%'}}>Sleep Duration ➡️ </h3>
+                    <h3 style={{textDecorationLine: 'underline', float: 'right'}}>{sleepDuration}</h3>
+                </div>
+                <div style={{display: 'inline-flex', flexDirection: 'row', flexWrap: 'wrap'}}>
+                    <h3 style={{marginRight: '5%'}}>Number of Foods ➡️ </h3>
+                    <h3 style={{textDecorationLine: 'underline', float: 'right'}}>{foods}</h3>
                 </div>
             </div> ) : null}
             <br></br>
