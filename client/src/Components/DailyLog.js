@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 
 function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayedSchedule, handleScheduleDelete }) {
     const [show, setShow] = useState(false)
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     
     const regex = /\d+:\d+/g
 
@@ -58,22 +59,34 @@ function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayed
         setShow(false)
     }
 
-    console.log(displayedSchedule)
-    console.log(foods)
+    window.addEventListener('resize', () => setWindowWidth(window.innerWidth))
+
+    let infoWidth = '26vw'
+    let buttonWidth = '12vw'
+    let datePadding = '0.5%'
+    let infoPadding = '1%'
+    let scrollButtonWidth = '15%'
+    if (windowWidth < 768) {
+        infoWidth = '50vw'
+        buttonWidth = '26vw'
+        datePadding = '3%'
+        infoPadding = '4%'
+        scrollButtonWidth = '60%'
+    }
     
     return (
         <div style={{minHeight: '100vh', minWidth: '100vw'}}>
             <br></br>
             <br></br>
-            <h1 id="pop" style={{color: 'white', display: 'table', margin: 'auto', backgroundColor: 'blue', padding: '20px', borderRadius: '10px'}}>{displayedSchedule ? `${displayedSchedule[0].date}` : "No schedules to display"}</h1>
+            <h1 id="pop" style={{color: 'white', display: 'table', margin: 'auto', backgroundColor: 'blue', padding: datePadding, borderRadius: '10px'}}>{displayedSchedule ? `${displayedSchedule[0].date}` : "No schedules to display"}</h1>
             <br></br>
-            <div style={{display: 'flex', justifyContent: index > 0 && index < schedules.length - 1 ? 'space-between' : 'center', width: '15%', margin: 'auto'}}>
+            <div style={{display: 'flex', justifyContent: index > 0 && index < schedules.length - 1 ? 'space-between' : 'center', width: scrollButtonWidth, margin: 'auto'}}>
                 {index > 0 ? <Button variant="primary" type="button" onClick={handlePrevious} style={{width: '100px'}}>Previous</Button> : null}
                 {index < schedules.length - 1 ? <Button variant="primary" type="button" onClick={handleNext} style={{width: '93px'}}>Next</Button> : null}
             </div>
             <br></br>
             {displayedSchedule ? (
-            <div style={{display: 'flex', flexDirection: 'column', width: '26%', margin: 'auto', color: 'black', borderRadius: '20px', backgroundColor: '#FFCC66', padding: '20px'}}>
+            <div style={{display: 'flex', flexDirection: 'column', width: infoWidth, margin: 'auto', color: 'black', borderRadius: '20px', backgroundColor: '#FFCC66', padding: infoPadding}}>
                 <div style={{display: 'inline-flex', flexDirection: 'row', flexWrap: 'wrap'}}>
                     <h3 style={{marginRight: '5%'}}>Number of Activities ➡️ </h3>
                     <h3 style={{textDecorationLine: 'underline', float: 'right'}}>{activitiesTotal}</h3>
@@ -151,7 +164,7 @@ function DailyLog({ schedules, index, setIndex, handleSchedulesScroll, displayed
             <br></br>
             <br></br>
             {displayedSchedule ? (
-                <Button variant="danger" type="button" onClick={handleShow} style={{display: 'flex', width: '12%', margin: 'auto', justifyContent: 'center'}}>Delete Schedule</Button>) : null}
+                <Button variant="danger" type="button" onClick={handleShow} style={{display: 'flex', width: buttonWidth, margin: 'auto', justifyContent: 'center'}}>Delete Schedule</Button>) : null}
             <br></br>
             <br></br>
             <Modal 

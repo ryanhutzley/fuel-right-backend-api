@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { LineChart, Line, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 function History({ user, schedules, favFood, avgSleepDuration, bestPerformanceFood, optimalSleepDuration, chartOneData, chartTwoData }) {
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth)
 
     let activitiesTotal = 0
 
@@ -21,14 +22,25 @@ function History({ user, schedules, favFood, avgSleepDuration, bestPerformanceFo
         name = user.name.charAt(0).toUpperCase() + user.name.slice(1)
     }
 
+    window.addEventListener('resize', () => setWindowWidth(window.innerWidth))
+
+    let infoWidth = '47vw'
+    let namePadding = '0.5%'
+    let infoPadding = '1%'
+    if (windowWidth < 768) {
+        infoWidth = '60vw'
+        namePadding = '3%'
+        infoPadding = '4%'
+    }
+
     return (
         <div style={{minHeight: '100vh', minWidth: '100vw'}}>
             <br></br>
             <br></br>
-            <h1 id="pop" style={{color: 'white', display: 'table', margin: 'auto', backgroundColor: 'blue', padding: '10px', borderRadius: '10px'}}>{`${name}'s History`}</h1>
+            <h1 id="pop" style={{color: 'white', display: 'table', margin: 'auto', backgroundColor: 'blue', padding: namePadding, borderRadius: '10px'}}>{`${name}'s History`}</h1>
             <br></br>
             <br></br>
-            <div style={{display: 'flex', flexDirection: 'column', width: '47%', margin: 'auto', color: 'black', borderRadius: '20px', backgroundColor: '#FFCC66', padding: '20px'}}>
+            <div style={{display: 'flex', flexDirection: 'column', width: infoWidth, margin: 'auto', color: 'black', borderRadius: '20px', backgroundColor: '#FFCC66', padding: infoPadding}}>
                 <div style={{display: 'inline-flex', flexDirection: 'row', flexWrap: 'wrap'}}>
                     <h2 style={{marginRight: '1%'}}>Total Number of Activities ➡️ </h2>
                     <h2 style={{textDecorationLine: 'underline', float: 'right'}}>{activitiesTotal}</h2>
