@@ -2,7 +2,13 @@
 
 [![Code Coverage](https://img.shields.io/codecov/c/github/ryanhutzley/fuel-right-backend-api)](https://codecov.io/github/ryanhutzley/fuel-right-backend-api) -->
 
+<div align="center">
+
+<img src="https://github.com/ryanhutzley/fuel-right-backend-api/blob/master/client/src/icon/FuelRight Logo.png" alt="FuelRight" width="200" height="200" />
+  
 # Flatiron Phase 5 Project - FuelRight
+  
+</div>
 
 ## Description
 
