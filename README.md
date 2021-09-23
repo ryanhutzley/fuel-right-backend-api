@@ -12,7 +12,9 @@
 
 ## Description
 
-A food, workout, and sleep tracker that helps users visualize how sleep duration and nutrition impact workout performance. 
+A food, workout, and sleep tracker that helps users visualize how sleep duration and nutrition impact workout performance.
+
+**Check out the live site [here](https://shielded-river-03532.herokuapp.com/login)!**
 
 ## Requirements
 
